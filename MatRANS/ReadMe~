@@ -1,0 +1,19 @@
+The MatRANS file structure is organized as follows:
+
+MatRANS/src: Contains source code for current release.
+MatRANS/src_old: Contains source code for previous releases.
+MatRANS/Examples: Contains over 20 set up examples for simulating steady and wave boundary layers.
+MatRANS/ModelDescription: Contains a LaTeX document describing the model (This needs to be updated to describe the transitional turbulence model and sediment mixtures).
+MatRANS/Papers: Contains links to journal papers describing development and applications of MatRANS.
+MatRANS/Courses: Contains files for simulations utilized in courses at DTU.
+MatRANS/Work: Intended as a working directory for new users to organize new applications.
+
+Brief description of versions: 
+10: Basic turbulence and sediment transport models
+20: Extended to include (1) transitional turbulence model and (2) sediment mixtures
+21: Bug fix in transitional model, with updated setup for the relevant Examples (steady currents on smooth/rough beds as well as solitary wave boundary layers).
+
+Have fun!
+
+David R. Fuhrman
+August 29, 2018

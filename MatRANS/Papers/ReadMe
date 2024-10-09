@@ -1,0 +1,13 @@
+These papers describe the development of the MatRANS model, for simulating simple turbulent boundary layer flows in Matlab.  The original model development is described in Fuhrman et al. (2013).  Extension to include transitional k-omega turbulence closure is described in Williams and Fuhrman (2016) and Kirca et al. (2016).  Extension of the sediment transport model to handle graded sediment mixtures is described by Caliskan and Fuhrman (2017).
+
+References
+
+Caliskan, U. and Fuhrman, D.R. 2017 RANS-based simulation of wave-induced sheet-flow transport of graded sediments. Coast. Eng. 121, 90-102.
+
+Fuhrman, D.R., Schløer, S. and Sterner, J. 2013 RANS-based simulation of turbulent wave boundary layer and sheet-flow sediment transport processes. Coast. Eng. 73, 151-166.
+
+Kirca, V.S.O., Sumer, B.M., Steffensen, M., Jensen, K.L. and Fuhrman, D.R. 2016 Longitudinal dispersion of heavy particles in an oscillating tunnel and application to wave boundary layers. J. Ocean Eng. Mar. Energy 2, 59-83.
+
+Williams, I.A. and Fuhrman, D.R. 2016 Numerical simulation of tsunami-scale wave boundary layers.  Coast. Eng. 110, 17-31.
+
+
