@@ -23,7 +23,7 @@ OutFileName = 'out_MatRANS.mat';
 h_m = 0.1; % Height of model depth (m)
 ny = 100; % Numbers of grid points in the vertical direction
 %y = linspace(0,h_m,ny); % Define grid, linear spacing
-y = h_m.*logspace(-3.,0,ny-1); y = y - y(1); y = [y h_m]; % Define grid, logarithmic stretching
+y = h_m.*logspace(-2.75,0,ny-1); y = y - y(1); y = [y h_m]; % Define grid, logarithmic stretching
 
 % Wave input 
 T = 9.9; % Wave period (s)
@@ -45,7 +45,7 @@ iconv = 1; % Converging-diverging effects 0: Off, 1: On
 depth = h_m; % Physical depth or tunnel half-depth
 
 % Current input
-Px = -0.0515; -0.03; -0.0316; -0.0307; -0.04; -0.02; -0.01; -0.004; -0.002; -0.0515; % Constant added to 1/rho*dpdx (for no current, just set to zero) (m/s^2)
+Px = -0.054; -0.0515; -0.03; -0.0316; -0.0307; -0.04; -0.02; -0.01; -0.004; -0.002; -0.0515; % Constant added to 1/rho*dpdx (for no current, just set to zero) (m/s^2)
 % For pure current, this will equal -Uf^2/h_m at steady state
 
 % Time input
@@ -55,7 +55,7 @@ t2 = 50*T; % End time (s)
 t_span = [0:dt:t2]; % Vector of time levels where output will be saved (s)
 
 % Sediment input
-d = 2e-6; % Grain size (m)
+d = 5e-6; % Grain size (m)
 k_N = 2.5*d; % Nikuradse's equivalent sand grain roughness (m)
 b = 2*d; % Reference height (m)
 s = 2.65; % Relative sediment density
@@ -65,8 +65,8 @@ phi_s = 32; % Angle of repose (deg)
 w_s = 0.001; % Fall velocity (if 0, then calculated empirically) (m/s)
 
 % Method for suspended sediment concentration boundary condition (only used is susp=1)
-icb = 4; % 1: Zyserman-Fredsøe cb, 2: O'Donoghue-Wright cb, 3: Engelund-Fredsøe cb, 4: Einstein cb
-% 11: Pickup function (van Rijn), 12: Pickup function based on Engelund-Fredsøe cb
+icb = 4; % 1: Zyserman-Fredsï¿½e cb, 2: O'Donoghue-Wright cb, 3: Engelund-Fredsï¿½e cb, 4: Einstein cb
+% 11: Pickup function (van Rijn), 12: Pickup function based on Engelund-Fredsï¿½e cb
 beta_s = 1.7; % Sediment diffusivity (eps_s=beta_s*nu_T) (also, inverse of Prandtl-Schmidt number, if 0: Use van Rijn (1984) correction
 iextrap = 1; % Use extrapolation to avoid overloading: 0: Off, 1: On
 
@@ -84,13 +84,13 @@ BedLoad = 3; % 1: Meyer-Peter Muller, 2: Engelund-Fredsoe (7.59),
              % 3: Engelund-Fredsoe (7.54) + (7.58), 4: Nielsen (1992)
 
 % Wall boundary condition for turbulent kinetic energy k
-ikbc = 1; % 0: k = 0, 1: dk/dy=0 wall boundary condition
+ikbc = 0; % 0: k = 0, 1: dk/dy=0 wall boundary condition
 
 % Closure coefficients k-omega model (disregard if turb=0)
 alphaW = 13/25; beta_0 = 0.0708; betaW = beta_0; beta_star = 9/100;
 sigmaW = 0.5; sigma_star = 3/5; sigma_do = 1/8;
 if ikbc == 0
-  C_lim = 0; % Turns off stress limiter for k=0 boundary condition
+  C_lim = 7/8; % Turns off stress limiter for k=0 boundary condition
   coef1 = 80; % Coefficient in S_r for k_Np > 5 (Default = 100; Fuhrman et al. 2010 suggest 80) 
 elseif ikbc == 1
   C_lim = 7/8; % Default = 7/8
@@ -99,8 +99,8 @@ end
 coef2 = 200; % Coefficient in S_r independent of k_Np (Default = 200)
 
 % Filter coefficients, 0-0.25, 0: Off, 0.25: Kills Nyquist
-filt_U = 0.05; % Filter on du/dt
-filt_K = 0.25; % Filter on dk/dt
+filt_U = 0.0; 05; % Filter on du/dt
+filt_K = 0.0; 25; % Filter on dk/dt
 filt_W = 0; % Filter on d(omega)/dt
 filt_C = 0; % Filter on dc/dt
 

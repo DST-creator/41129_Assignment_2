@@ -14,15 +14,12 @@ To run (both cases):
 
 Transitional turbulence model:
 Additionally, in the SmoothTransitional and RoughTransitional directories, these cases are re-considered using the transitional turbulence model
- (i.e. set turb=2) of Wilcox (2006, pp. 200-211).  These cases are set up 
-to use pre-saved initial conditions from the end state of the otherwise-
-identical simulations using the standard k-omega model.
+ (i.e. set turb=2) of Wilcox (2006, pp. 200-211).  
 
 
 
-To run (both cases, assumes Rough and Smooth cases have already been run):
+To run (both cases):
 
->>makeInitialConditions;
 >>MatRANS;
 
 >>Compare;

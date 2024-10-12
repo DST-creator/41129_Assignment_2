@@ -62,10 +62,12 @@ for j = 1:length(phaseOW)
   box on;  
 end
 
+% Add legend
+figure(2), legend('O''Donoghue & Wright (2004)','Model','Location','North','FontSize',6)
+figure(1), legend('O''Donoghue & Wright (2004)','Model','Location','North','FontSize',6)
+title('Period-averaged suspended sediment flux','FontSize',6)
 
 % Calculate average sediment fluxes
 qBm = mean(qB(ivec))*1e6 % Bed load
 qSm = mean(qS(ivec))*1e6 % Suspended load
 qTm = qBm + qSm % Total
-
-

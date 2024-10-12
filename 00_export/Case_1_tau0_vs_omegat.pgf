@@ -30,7 +30,7 @@
 \begingroup%
 \makeatletter%
 \begin{pgfpicture}%
-\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{17.159114in}{8.354397in}}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{17.248026in}{8.354397in}}%
 \pgfusepath{use as bounding box, clip}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -42,8 +42,8 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{0.000000in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{17.159114in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{17.159114in}{8.354397in}}%
+\pgfpathlineto{\pgfqpoint{17.248026in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{17.248026in}{8.354397in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{8.354397in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{0.000000in}}%
 \pgfpathclose%
@@ -1427,10 +1427,10 @@
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{14.886054in}{7.231491in}}%
-\pgfpathlineto{\pgfqpoint{17.003559in}{7.231491in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{17.059114in}{7.231491in}}{\pgfqpoint{17.059114in}{7.287047in}}%
-\pgfpathlineto{\pgfqpoint{17.059114in}{8.045817in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{17.059114in}{8.101372in}}{\pgfqpoint{17.003559in}{8.101372in}}%
+\pgfpathlineto{\pgfqpoint{17.092470in}{7.231491in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{17.148026in}{7.231491in}}{\pgfqpoint{17.148026in}{7.287047in}}%
+\pgfpathlineto{\pgfqpoint{17.148026in}{8.045817in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{17.148026in}{8.101372in}}{\pgfqpoint{17.092470in}{8.101372in}}%
 \pgfpathlineto{\pgfqpoint{14.886054in}{8.101372in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{14.830499in}{8.101372in}}{\pgfqpoint{14.830499in}{8.045817in}}%
 \pgfpathlineto{\pgfqpoint{14.830499in}{7.287047in}}%
@@ -1455,7 +1455,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=15.719388in,y=7.791898in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}model}}%
+\pgftext[x=15.719388in,y=7.791898in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Model}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -1473,7 +1473,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=15.719388in,y=7.398624in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}theoretical}}%
+\pgftext[x=15.719388in,y=7.398624in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Theoretical}}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

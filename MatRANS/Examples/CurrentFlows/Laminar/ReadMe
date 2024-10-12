@@ -3,10 +3,7 @@ laminar current, starting from motionless initial conditions.  As the
  case is laminar, the turbulence model is switched off.  The resuling
 velocity profile is compared against analytical laminar theory.
 
-
-
 To run:
-
 
 >>MatRANS;
 

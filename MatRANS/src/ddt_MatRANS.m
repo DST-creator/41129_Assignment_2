@@ -192,7 +192,7 @@ function [out]= ddt_MatRANS(t,f)
     dWdx = dWdx + iconv.*(W.*S/depth); % Also add slope contribution
 
     % Final Navier-Stokes equation
-    dudt = dudt0 - (u.*dudx + v.*gradient(u,y')) - 2/3*dKdx*(turb>0); % du/dt
+    dudt = dudt0 - (u.*dudx + v.*gradient(u,y')) - 0*2/3*dKdx*(turb>0); % du/dt
     dudt(1,1) = 0; % Boundary condition at the seabed (keeps u=0)
     dudt(end,1) = dudt(end-1,1); % Forces du/dy=0 at top boundary
 

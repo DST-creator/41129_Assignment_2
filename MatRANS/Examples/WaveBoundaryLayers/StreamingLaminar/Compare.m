@@ -44,7 +44,7 @@ for i = nT+1:10*nT:length(t) % Does so every 10th period
 end
 
 % Add legend
-hleg = legend('Computed','Theory',2);
+hleg = legend('Computed','Theory');
 set(hleg,'FontSize',8,'location','NorthWest');
 
 % Compute dimensionless streaming velocity

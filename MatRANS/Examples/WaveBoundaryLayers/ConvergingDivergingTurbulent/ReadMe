@@ -6,7 +6,7 @@ velocity profile is animated through time until a steady state is
 reached.  The resulting profile is then compared with the
 measurements.  As the simulation only covers the bottom half of the
 tunnel, the computed results are reflected across the top boundary for
-presentation purposes.  Note that this simulation is identical to that
+presentation purposes.  Note that this simulation is similar to that
 leading to Figure 8 of Fuhrman et al. (2013).
 
 To run:

@@ -66,8 +66,8 @@ phi_s = 32; % Angle of repose (deg)
 w_s = 0; % Fall velocity (if 0, then calculated empirically) (m/s)
 
 % Method for suspended sediment concentration boundary condition (only used is susp=1)
-icb = 4; % 1: Zyserman-Fredsøe cb, 2: O'Donoghue-Wright cb, 3: Engelund-Fredsøe cb, 4: Einstein cb
-% 11: Pickup function (van Rijn), 12: Pickup function based on Engelund-Fredsøe cb
+icb = 4; % 1: Zyserman-Fredsï¿½e cb, 2: O'Donoghue-Wright cb, 3: Engelund-Fredsï¿½e cb, 4: Einstein cb
+% 11: Pickup function (van Rijn), 12: Pickup function based on Engelund-Fredsï¿½e cb
 beta_s = 2.0; % Sediment diffusivity (eps_s=beta_s*nu_T) (also, inverse of Prandtl-Schmidt number, if 0: Use van Rijn (1984) correction
 iextrap = 1; % Use extrapolation to avoid overloading: 0: Off, 1: On
 
@@ -97,7 +97,7 @@ alpha0 = 1/9; alpha_star0 = 1/3*betaW; beta_star0 = 9/100; % Closure coefficient
 
 % Wall boundary condition for turbulent kinetic energy k
 if ikbc == 0
-  C_lim = 0; % Turns off stress limiter for k=0 boundary condition
+  C_lim = 7/8; % Turns off stress limiter for k=0 boundary condition
   coef1 = 80; % Coefficient in S_r for k_Np > 5 (Default = 100; Fuhrman et al. 2010 suggest 80) 
 elseif ikbc == 1
   C_lim = 7/8; % Default = 7/8

@@ -84,13 +84,13 @@ BedLoad = 3; % 1: Meyer-Peter Muller, 2: Engelund-Fredsoe (7.59),
              % 3: Engelund-Fredsoe (7.54) + (7.58), 4: Nielsen (1992)
 
 % Wall boundary condition for turbulent kinetic energy k
-ikbc = 1; % 0: k = 0, 1: dk/dy=0 wall boundary condition
+ikbc = 0; % 0: k = 0, 1: dk/dy=0 wall boundary condition
 
 % Closure coefficients k-omega model (disregard if turb=0)
 alphaW = 13/25; beta_0 = 0.0708; betaW = beta_0; beta_star = 9/100;
 sigmaW = 0.5; sigma_star = 3/5; sigma_do = 1/8;
 if ikbc == 0
-  C_lim = 7/8; % Turns off stress limiter for k=0 boundary condition
+  C_lim = 7/8; % Stress limiter coefficient
   coef1 = 80; % Coefficient in S_r for k_Np > 5 (Default = 100; Fuhrman et al. 2010 suggest 80) 
 elseif ikbc == 1
   C_lim = 0; % Default = 7/8

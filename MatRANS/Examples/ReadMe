@@ -1,8 +1,8 @@
-Beneath this directory, you will find several set-up examples which test essentially all of the features developed within this model.  To run them, be sure that the MatRANS_r20/src (source code) directory is in your Matlab path e.g.:
+In this directory you will find several example set up cases, which test essentially all of the features developed within this model.  To run them, be sure that the MatRANS/src (source code) directory is in your Matlab path e.g.:
 
->> addpath path/to/my/MatRANS_r20/src
+>> addpath path/to/my/MatRANS/src
 
-or alternatively set this up in MatRANS_r20/src/startup_MatRANS.m, and simply execute this script.
+or alternatively set this up in MatRANS/src/startup_MatRANS.m, and simply execute this script.
 
 
 The (approx. 22 set up) cases are logically organized as follows:
@@ -33,7 +33,7 @@ In /SedimentTransport (4 tutorial examples)
 /SedimentTransportWaves: Tests computed sediment fluxes against measuremenets (two cases, involving fine and medium sands)
 /GradedSedimentTransportWaves: Demonstrates additional use of graded sediment (multiple grain sizes) transport beneath velocity-skewed free stream flow.
 
-Each tutorial also comes with its own ReadMe file, as well as relevant papers as PDF files, so please consult these for further details.
+Each tutorial also comes with its own ReadMe file, so please consult these for further details.
 
 Have fun!
 

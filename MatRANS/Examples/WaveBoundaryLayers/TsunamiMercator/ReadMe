@@ -1,12 +1,13 @@
 This case considers a turbulent boundary layer simulation based on 
 the Indian Ocean tsunami from December 26, 2004.  For this purpose 
-depth measurements made by a fish-finder on Thomas Siffer's yacht 
+depth measurements made by a depth-finder on Thomas Siffer's yacht 
 Mercator (see e.g Madsen and Fuhrman 2008, p. 216) are digitized,
 and converted to velocities (based on shallow-water scaling).  This 
 is done using scripts contained within the /Data subfolder.  These 
 velocities (and corresponding accelerations) are then used to drive 
 the flow within the model.  Hence this case serves as an example on 
-how to drive the model based on a user-defined signal.  In the comparison, the resulting flow and turbulence profiles are animated.  
+how to drive the model based on a user-defined signal.  In the
+comparison, the resulting flow and turbulence profiles are animated.  
 Additionally, the computed velocity time series from the top of the 
 model domain is compared with that based on the converted original 
 digitized data.  
