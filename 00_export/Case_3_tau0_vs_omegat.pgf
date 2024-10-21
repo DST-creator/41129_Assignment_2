@@ -1152,7 +1152,8 @@
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{2.697221in}{3.039281in}}%
+\pgfpathmoveto{\pgfqpoint{2.370906in}{2.782068in}}%
+\pgfpathlineto{\pgfqpoint{2.697221in}{3.039281in}}%
 \pgfpathlineto{\pgfqpoint{3.023537in}{3.413844in}}%
 \pgfpathlineto{\pgfqpoint{3.349853in}{3.786560in}}%
 \pgfpathlineto{\pgfqpoint{3.676169in}{4.168631in}}%
