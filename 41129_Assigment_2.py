@@ -19,10 +19,10 @@ import custom_markers
 
 exp_fld = "./00_export/"
 if not os.path.isdir(exp_fld): os.mkdir(exp_fld)
-replot_tasks = dict(C1=True, 
-                    C2=True,
-                    C3=True,
-                    C4=True,
+replot_tasks = dict(C1=False, 
+                    C2=False,
+                    C3=False,
+                    C4=False,
                     T7=True)
 
 #%% Global plot settings
@@ -365,7 +365,7 @@ if 'struct_mdl2' in globals():
     f_w_ast_mdl_c2 = 2*struct_mdl2.tau0/struct_mdl2.rho \
                    / (struct_mdl2.U0m**2 
                       * np.sin(omegat_c2 + np.pi/4)) 
-    
+       
 if replot_tasks["C2"]:
     if not 'struct_mdl2' in globals():
         print("Data missing for Case 2 - Plots not replotted")
@@ -381,7 +381,7 @@ if replot_tasks["C2"]:
             label="Theoretical",
             zorder=2)
     ax.scatter(struct_meas2.omegat_tau0,
-               struct_meas2.tau0/(rho*struct_mdl2.U0m**2),
+               struct_meas2.tau0/(struct_meas2.rho*struct_meas2.U0m**2),
                label="Measurements",
                marker= "+", s=150, c="k", zorder=2)
     
@@ -506,6 +506,7 @@ if replot_tasks["C3"]:
                 label = r"$\omega t = " + f"{phase_i}" 
                         + r"\:\unit{\degree}$ -- Model",
                 zorder=2)
+
     for i,phase_i in enumerate(phase_angles):
         ms = mss[markers[i]] if mss.get(markers[i]) else mss["default"]
         ax.scatter(struct_meas3.y_uuvv/case_tbl.loc[case, "a"],
@@ -514,7 +515,9 @@ if replot_tasks["C3"]:
                           + r"\:\unit{\degree}$ -- Measurements", 
                    zorder=2, **ms)
     
-    ax.axvline (delta_c3/case_tbl.loc[case, "a"], c="k", ls="--", lw=1.2)
+# =============================================================================
+#     ax.axvline (delta_c3/case_tbl.loc[case, "a"], c="k", ls="--", lw=1.2)
+# =============================================================================
     
     #Formatting
     ax.set_ylabel(r'$\frac{k}{U_{0m}^2}$',
@@ -522,7 +525,7 @@ if replot_tasks["C3"]:
     ax.set_xlabel(r'$\frac{y}{a}$',
                   fontsize = 1.5*mpl.rcParams['axes.labelsize'])
     ax.grid(zorder=1)
-    ax.set_xscale("log")
+    # ax.set_xscale("log")
     ax.legend(loc="center right", ncols=2,
               bbox_to_anchor=(1, .4))
     
@@ -532,6 +535,40 @@ if replot_tasks["C3"]:
     fig.savefig(fname+".pgf")                     # Save PGF file for text 
                                                    # inclusion in LaTeX
     plt.close(fig)
+    
+    #Plot k/U_om^2 over y/a
+    for i,phase_i in enumerate(phase_angles):
+        fig, ax = plt.subplots()
+        ax.plot(struct_mdl3.y/case_tbl.loc[case, "a"],
+                struct_mdl3.k[i_ph_c3_mdl[i],:]/struct_mdl3.U0m**2,
+                label = r"$\omega t = " + f"{phase_i}" 
+                        + r"\:\unit{\degree}$ -- Model",
+                zorder=2)
+        
+        ms = mss[markers[i]] if mss.get(markers[i]) else mss["default"]
+        ax.scatter(struct_meas3.y_uuvv/case_tbl.loc[case, "a"],
+                   k_meas_c3[:,i_ph_c3_meas[i]]/struct_meas3.U0m**2,
+                   label = r"$\omega t = " + f"{phase_i}" 
+                          + r"\:\unit{\degree}$ -- Measurements", 
+                   zorder=2, **ms)
+    
+
+        #Formatting
+        ax.set_ylabel(r'$\frac{k}{U_{0m}^2}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+        ax.set_xlabel(r'$\frac{y}{a}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+        ax.grid(zorder=1)
+        # ax.set_xscale("log")
+        ax.legend(loc="center right", ncols=2,
+                  bbox_to_anchor=(1, .4))
+        
+        fname = exp_fld+f"Case_3_k_vs_y_{phase_i}"
+        fig.savefig(fname=fname+".svg")
+        fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
+        fig.savefig(fname+".pgf")                     # Save PGF file for text 
+                                                       # inclusion in LaTeX
+        plt.close(fig)
     
     #Plot Reynolds stresses over y/a
     fig, ax = plt.subplots()
@@ -628,7 +665,7 @@ if replot_tasks["C3"]:
                                                    # inclusion in LaTeX
     plt.close(fig)
     
-    print("Case 2 successfully plotted")
+    print("Case 3 successfully plotted")
 else:
     print("Plots for Case 3 not replotted")   
 #%% Case 4: Turbulent wave boundary layer, rough wall
@@ -708,7 +745,9 @@ if replot_tasks["C4"]:
                           + r"\:\unit{\degree}$ -- Measurements", 
                    zorder=2, **ms)
     
-    ax.axvline (delta_c4/case_tbl.loc[case, "a"], c="k", ls="--", lw=1.2)
+# =============================================================================
+#     ax.axvline (delta_c4/case_tbl.loc[case, "a"], c="k", ls="--", lw=1.2)
+# =============================================================================
     
     #Formatting
     ax.set_ylabel(r'$\frac{k}{U_{0m}^2}$',
@@ -716,7 +755,7 @@ if replot_tasks["C4"]:
     ax.set_xlabel(r'$\frac{y}{a}$',
                   fontsize = 1.5*mpl.rcParams['axes.labelsize'])
     ax.grid(zorder=1)
-    ax.set_xscale("log")
+    # ax.set_xscale("log")
     ax.legend(loc="center right", ncols=2,
               bbox_to_anchor=(1, .4))
     
@@ -793,8 +832,8 @@ if replot_tasks["C4"]:
     #Plot tau_0/(rho*struct_mdl4.U0m^2) over omega*t
     # Get indices for the first half of the fourth cylcle
     i_ph_c4_mdl_tau0 = np.argwhere((omegat_c4>=start_ang) 
-                           & (omegat_c4<=start_ang + np.pi)).flatten()
-    i_ph_c4_meas_tau0 = np.argwhere(struct_meas4.omegat_tau0<=180).flatten()
+                           & (omegat_c4<=start_ang + 2*np.pi)).flatten()
+    i_ph_c4_meas_tau0 = np.argwhere(struct_meas4.omegat_tau0<=360).flatten()
 
     fig, ax = plt.subplots()
     ax.plot(np.rad2deg(omegat_c4[i_ph_c4_mdl_tau0]-start_ang),
@@ -834,21 +873,21 @@ if replot_tasks["T7"]:
     #Plot k/U_om^2 over y/a
     fig, ax = plt.subplots()
     ax.plot(struct_mdl3.y/case_tbl.loc["3", "a"],
-            struct_mdl3.k[i_ph_c4_mdl[i],:]/struct_mdl3.U0m**2,
+            struct_mdl3.k[i_ph_c3_mdl[2],:]/struct_mdl3.U0m**2,
             label = r"Model -- Smooth wall",
             zorder=2)
     ax.plot(struct_mdl4.y/case_tbl.loc["4", "a"],
-            struct_mdl4.k[i_ph_c4_mdl[i],:]/struct_mdl4.U0m**2,
+            struct_mdl4.k[i_ph_c4_mdl[2],:]/struct_mdl4.U0m**2,
             label = r"Model -- Rough wall",
             zorder=2)
     ax.scatter(struct_meas3.y_uuvv/case_tbl.loc["3", "a"],
-               k_meas_c3[:,i_ph_c3_meas[i]]/struct_meas3.U0m**2,
+               k_meas_c3[:,i_ph_c3_meas[2]]/struct_meas3.U0m**2,
                label = r"Measurements -- Smooth wall", 
                zorder=2, **mss["+"])
     ax.scatter(struct_meas4.y_uuvv/case_tbl.loc["4", "a"],
-               k_meas_c4[:,i_ph_c4_meas[i]]/struct_meas4.U0m**2,
+               k_meas_c4[:,i_ph_c4_meas[2]]/struct_meas4.U0m**2,
                label = r"Measurements -- Rough wall", 
-               zorder=2, **mss["+"])
+               zorder=2, **mss["1"])
 
     #Formatting
     ax.set_ylabel(r'$\frac{k}{U_{0m}^2}$',
@@ -856,8 +895,8 @@ if replot_tasks["T7"]:
     ax.set_xlabel(r'$\frac{y}{a}$',
                   fontsize = 1.5*mpl.rcParams['axes.labelsize'])
     ax.grid(zorder=1)
-    ax.set_xscale("log")
-    ax.legend(loc="upper left", ncols=2)
+    # ax.set_xscale("log")
+    ax.legend(loc="upper right", ncols=2)
     
     fname = exp_fld+"Task_7_k_vs_y"
     fig.savefig(fname=fname+".svg")
