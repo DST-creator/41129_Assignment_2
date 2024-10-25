@@ -283,7 +283,8 @@ if 'struct_mdl1' in globals():
                          -struct_mdl1.y.reshape(1,-1)/delta_1_c1)      #Eq. 5.12
     
     #theoretical bed shear stress
-    tau_0_th_c1 = (np.sqrt(2)*mu*struct_mdl1.U0m)/delta_1_c1 * np.sin(omegat_c1+np.pi/4)    #Eq. 5.20
+    tau_0_th_c1 = (np.sqrt(2)*mu*struct_mdl1.U0m)\
+                    /delta_1_c1 * np.sin(omegat_c1+np.pi/4)    #Eq. 5.20
 
 if replot_tasks["C1"]:
     if not 'struct_mdl1' in globals():
@@ -300,9 +301,9 @@ if replot_tasks["C1"]:
                 label=f"Theory {i}", ls="--", zorder=2)
     
     #Labels
-    ax.text(0.05, 0.02, 
+    ax.text(0.07, 0.013, 
             r"$\omega t=0\:\unit{\degree}$",
-            ha="left", va="center", 
+            ha="left", va="bottom", 
             bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
     ax.text(0.8, 0.013, 
             r"$45\:\unit{\degree}$",
@@ -322,7 +323,9 @@ if replot_tasks["C1"]:
     ax.set_xlabel(r'$\frac{u}{U_{0m}}$',
                    fontsize =  1.5*mpl.rcParams['axes.labelsize'])
     ax.grid(zorder=1)
-    ax.set_ylim([0,6e-2])
+    ax.set_ylim([0,4.5e-2])
+    ax.ticklabel_format(axis="y", style='scientific', 
+                           scilimits=(0, 0))
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles=handles[:2], 
               labels = ["Model", "Laminar theory"], 
@@ -343,7 +346,7 @@ if replot_tasks["C1"]:
              zorder=2)
     ax.plot(np.rad2deg(omegat_c1[i_ph_c1_mdl_cont]-start_ang),
             tau_0_th_c1[i_ph_c1_mdl_cont]/(rho*struct_mdl1.U0m**2), 
-            label="Laminar Theory",
+            label="Laminar theory",
             zorder=2)
     
     #Formatting
@@ -372,11 +375,12 @@ if 'struct_mdl2' in globals():
     #Preparation
     omegat_c2 = omega*struct_mdl2.t
     i_ph_c2_mdl = np.argwhere((omegat_c2>=start_ang-np.deg2rad(1)) 
-                       & (omegat_c2<=start_ang+np.deg2rad(180))).flatten() 
+                       & (omegat_c2<=start_ang+np.deg2rad(360))).flatten() 
     
     #theoretical bed shear stress
     delta_1_c2 = np.sqrt(2*nu/omega)   #Eq. 5.13
-    tau_0_th_c2 = (np.sqrt(2)*mu*struct_mdl2.U0m)/delta_1_c2 * np.sin(omegat_c2+np.pi+4)    #Eq. 5.20
+    tau_0_th_c2 = (np.sqrt(2)*mu*struct_mdl2.U0m)/delta_1_c2 \
+                    * np.sin(omegat_c2+np.pi+4)    #Eq. 5.20
     
     #Friction coefficient
     f_w_ast_meas_c2 = 2*struct_meas2.tau0/struct_meas2.rho \
@@ -410,7 +414,8 @@ if replot_tasks["C2"]:
     ax.set_ylabel(r'$\frac{\tau_0}{\rho \cdot U_{0m}^2}$',
                    fontsize = 1.5*mpl.rcParams['axes.labelsize'])
     ax.set_xlabel(r'$\omega t\:\unit{[\degree]}$')
-    ax.set_xticks(np.arange(0,181,10))
+    ax.set_xlim([-5,365])
+    ax.set_xticks(np.arange(0,361,20))
     ax.grid(zorder=1)
     ax.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
     
@@ -527,7 +532,7 @@ if replot_tasks["C3"]:
     plt.close(fig)
     
     #Plot k/U_om^2 over y/a (separate plots)
-    fig, ax = plt.subplots(1,4,sharey=True)
+    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
     xmax = 1e-3*(np.ceil(np.max(struct_mdl3.k[i_ph_c3_mdl,:]
                                 /struct_mdl3.U0m**2)/1e-3)+1)
     ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
@@ -546,12 +551,14 @@ if replot_tasks["C3"]:
         #Formatting
         if i == 0:
             ax[i].set_title(r"$\omega t = " + f"{phase_i}"
-                            + r"\:\unit{\degree}$", pad = 6)
+                            + r"\:\unit{\degree}$", y=1.04)
         else:
-            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$",
-                            pad = 22)
-        ax[i].set_xlabel(r'$\frac{k}{U_{0m}^2}$',
-                      fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$", y=1.04)
+        fig.supxlabel(r'$\frac{k}{U_{0m}^2}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'],
+                      y=0, va="top")
+        # ax[i].set_xlabel(r'$\frac{k}{U_{0m}^2}$',
+        #               fontsize = 1.5*mpl.rcParams['axes.labelsize'])
         if i == 0:
             ax[i].set_ylabel(r'$y/a$')
         ax[i].grid(zorder=1)
@@ -589,12 +596,14 @@ if replot_tasks["C3"]:
         #Formatting
         if i == 0:
             ax[i].set_title(r"$\omega t = " + f"{phase_i}"
-                            + r"\:\unit{\degree}$", pad = 6)
+                            + r"\:\unit{\degree}$", y=1.04)
         else:
-            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$",
-                            pad = 22)
-        ax[i].set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
-                      fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$", y=1.04)
+        fig.supxlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'],
+                      y=0, va="top")
+        # ax[i].set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
+        #               fontsize = 1.5*mpl.rcParams['axes.labelsize'])
         if i == 0:
             ax[i].set_ylabel(r'$y/a$')
         ax[i].grid(zorder=1)
@@ -712,7 +721,7 @@ if replot_tasks["C4"]:
     fig, ax = plt.subplots(1,4,sharey=True)
     xmax = 1e-3*(np.ceil(np.max(struct_mdl4.k[i_ph_c4_mdl,:]
                                 /struct_mdl4.U0m**2)/1e-3)+1)
-    ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
+    ya_max = 1e-2*(np.ceil(np.max(struct_meas4.y_uuvv
                                 /case_tbl.loc[case, "a"])/1e-2))
     for i,phase_i in enumerate(phase_angles):
         ax[i].plot(struct_mdl4.k[i_ph_c4_mdl[i],:]/struct_mdl4.U0m**2,
@@ -728,12 +737,14 @@ if replot_tasks["C4"]:
         #Formatting
         if i == 0:
             ax[i].set_title(r"$\omega t = " + f"{phase_i}"
-                            + r"\:\unit{\degree}$", pad = 6)
+                            + r"\:\unit{\degree}$", y=1.04)
         else:
-            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$",
-                            pad = 22)
-        ax[i].set_xlabel(r'$\frac{k}{U_{0m}^2}$',
-                      fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$", y=1.04)
+        fig.supxlabel(r'$\frac{k}{U_{0m}^2}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'],
+                      y=0, va="top")
+        # ax[i].set_xlabel(r'$\frac{k}{U_{0m}^2}$',
+        #               fontsize = 1.5*mpl.rcParams['axes.labelsize'])
         if i == 0:
             ax[i].set_ylabel(r'$y/a$')
         ax[i].grid(zorder=1)
@@ -770,12 +781,14 @@ if replot_tasks["C4"]:
         #Formatting
         if i == 0:
             ax[i].set_title(r"$\omega t = " + f"{phase_i}"
-                            + r"\:\unit{\degree}$", pad = 6)
+                            + r"\:\unit{\degree}$", y=1.04)
         else:
-            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$",
-                            pad = 22)
-        ax[i].set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
-                      fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$", y=1.04)
+        fig.supxlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'],
+                      y=0, va="top")
+        # ax[i].set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
+        #               fontsize = 1.5*mpl.rcParams['axes.labelsize'])
         if i == 0:
             ax[i].set_ylabel(r'$y/a$')
         ax[i].grid(zorder=1)
@@ -830,6 +843,8 @@ if replot_tasks["T7"]:
         print("For Task 7, Task 3 & 4 need to be calculated")
         
     #Plot k/U_om^2 over y/a
+    ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
+                                /case_tbl.loc[case, "a"])/1e-2))
     fig, ax = plt.subplots()
     ax.plot(struct_mdl3.k[i_ph_c3_mdl[2],:]/struct_mdl3.U0m**2,
             struct_mdl3.y/case_tbl.loc["3", "a"],
@@ -853,6 +868,9 @@ if replot_tasks["T7"]:
                   fontsize = 1.5*mpl.rcParams['axes.labelsize'])
     ax.set_ylabel(r'$y/a$')
     ax.grid(zorder=1)
+    ax.ticklabel_format(axis="both", style='scientific', 
+                           scilimits=(0, 0))
+    ax.set_ylim([0, ya_max])
     # ax.set_yscale("log")
     ax.legend(loc="upper right", ncols=2)
     
