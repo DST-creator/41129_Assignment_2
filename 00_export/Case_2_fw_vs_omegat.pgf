@@ -30,7 +30,7 @@
 \begingroup%
 \makeatletter%
 \begin{pgfpicture}%
-\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{17.362337in}{7.835174in}}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{18.552303in}{7.835174in}}%
 \pgfusepath{use as bounding box, clip}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -42,8 +42,8 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{0.000000in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{17.362337in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{17.362337in}{7.835174in}}%
+\pgfpathlineto{\pgfqpoint{18.552303in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{18.552303in}{7.835174in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{7.835174in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{0.000000in}}%
 \pgfpathclose%
@@ -966,8 +966,8 @@
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{{6.660000pt}{2.880000pt}}{0.000000pt}%
-\pgfpathmoveto{\pgfqpoint{1.442382in}{1.980248in}}%
-\pgfpathlineto{\pgfqpoint{13.842382in}{1.980248in}}%
+\pgfpathmoveto{\pgfqpoint{1.442382in}{1.634891in}}%
+\pgfpathlineto{\pgfqpoint{13.842382in}{1.634891in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
@@ -1025,11 +1025,11 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetstrokeopacity{0.400000}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{2.006826in}{2.101708in}}%
-\pgfpathlineto{\pgfqpoint{4.510083in}{2.101708in}}%
-\pgfpathlineto{\pgfqpoint{4.510083in}{2.534911in}}%
-\pgfpathlineto{\pgfqpoint{2.006826in}{2.534911in}}%
-\pgfpathlineto{\pgfqpoint{2.006826in}{2.101708in}}%
+\pgfpathmoveto{\pgfqpoint{2.006826in}{1.687279in}}%
+\pgfpathlineto{\pgfqpoint{4.510083in}{1.687279in}}%
+\pgfpathlineto{\pgfqpoint{4.510083in}{2.120482in}}%
+\pgfpathlineto{\pgfqpoint{2.006826in}{2.120482in}}%
+\pgfpathlineto{\pgfqpoint{2.006826in}{1.687279in}}%
 \pgfpathclose%
 \pgfusepath{fill}%
 \end{pgfscope}%
@@ -1037,7 +1037,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=2.062382in,y=2.157263in,left,bottom]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$f_{w,theoretical}^*=0.0041$}}%
+\pgftext[x=2.062382in,y=1.742834in,left,bottom]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$f_{w,theoretical}^*=0.0025$}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -1051,10 +1051,10 @@
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{14.656826in}{6.726404in}}%
-\pgfpathlineto{\pgfqpoint{17.206781in}{6.726404in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{17.262337in}{6.726404in}}{\pgfqpoint{17.262337in}{6.781959in}}%
-\pgfpathlineto{\pgfqpoint{17.262337in}{7.540729in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{17.262337in}{7.596285in}}{\pgfqpoint{17.206781in}{7.596285in}}%
+\pgfpathlineto{\pgfqpoint{18.396747in}{6.726404in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{18.452303in}{6.726404in}}{\pgfqpoint{18.452303in}{6.781959in}}%
+\pgfpathlineto{\pgfqpoint{18.452303in}{7.540729in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{18.452303in}{7.596285in}}{\pgfqpoint{18.396747in}{7.596285in}}%
 \pgfpathlineto{\pgfqpoint{14.656826in}{7.596285in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{14.601271in}{7.596285in}}{\pgfqpoint{14.601271in}{7.540729in}}%
 \pgfpathlineto{\pgfqpoint{14.601271in}{6.781959in}}%
@@ -1106,7 +1106,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=15.490159in,y=6.893536in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Measurements}}%
+\pgftext[x=15.490159in,y=6.893536in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Data from Jensen et. al.}}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

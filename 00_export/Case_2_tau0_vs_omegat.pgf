@@ -30,7 +30,7 @@
 \begingroup%
 \makeatletter%
 \begin{pgfpicture}%
-\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{18.228760in}{7.872519in}}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{19.418726in}{7.872519in}}%
 \pgfusepath{use as bounding box, clip}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -42,8 +42,8 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{0.000000in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{18.228760in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{18.228760in}{7.872519in}}%
+\pgfpathlineto{\pgfqpoint{19.418726in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{19.418726in}{7.872519in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{7.872519in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{0.000000in}}%
 \pgfpathclose%
@@ -1334,10 +1334,10 @@
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{15.523249in}{6.333130in}}%
-\pgfpathlineto{\pgfqpoint{18.073204in}{6.333130in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{18.128760in}{6.333130in}}{\pgfqpoint{18.128760in}{6.388685in}}%
-\pgfpathlineto{\pgfqpoint{18.128760in}{7.540729in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{18.128760in}{7.596285in}}{\pgfqpoint{18.073204in}{7.596285in}}%
+\pgfpathlineto{\pgfqpoint{19.263170in}{6.333130in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{19.318726in}{6.333130in}}{\pgfqpoint{19.318726in}{6.388685in}}%
+\pgfpathlineto{\pgfqpoint{19.318726in}{7.540729in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{19.318726in}{7.596285in}}{\pgfqpoint{19.263170in}{7.596285in}}%
 \pgfpathlineto{\pgfqpoint{15.523249in}{7.596285in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{15.467694in}{7.596285in}}{\pgfqpoint{15.467694in}{7.540729in}}%
 \pgfpathlineto{\pgfqpoint{15.467694in}{6.388685in}}%
@@ -1407,7 +1407,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=16.356583in,y=6.500262in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Measurements}}%
+\pgftext[x=16.356583in,y=6.500262in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Data from Jensen et. al.}}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

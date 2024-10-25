@@ -23,7 +23,7 @@ replot_tasks = dict(C1=True,
                     C2=True,
                     C3=True,
                     C4=True,
-                    T7=False)
+                    T7=True)
 
 #%% Global plot settings
 
@@ -188,8 +188,8 @@ def ensemble_averaging(var, omegat, T=9.72, N=5, sc=1):
     
     Parameters:
         var (array-like): 
-            m x n array of measurements which should be ensemble averaged, 
-            where m is the number of time measurements (omega * t),
+            m x n array of Data from Jensen et. al. which should be ensemble averaged, 
+            where m is the number of time Data from Jensen et. al. (omega * t),
             and n is the number of spatial positions (y).
         omegat (array-like): 
             array of length m with the phase angles omega * t for each time 
@@ -205,21 +205,21 @@ def ensemble_averaging(var, omegat, T=9.72, N=5, sc=1):
     Returns:
         var_mean (numpy array): 
             m_ps x n array of the mean of the variable where m_ps is the 
-            number of time measurements per cycle and n is the number of 
+            number of time Data from Jensen et. al. per cycle and n is the number of 
             spatial positions
         var_fluc (numpy array): 
             N x m_ps x n array of the fluctuation of the variable around its 
             mean where N is the number of cycles (minus the skipped cycles at 
             the start - cf. parameter sc) m_ps is the number of time 
-            measurements per cycle and n is the number of spatial positions.
+            Data from Jensen et. al. per cycle and n is the number of spatial positions.
         var_fluc_mean (numpy array): 
             m_ps x n array of the mean of the fluctuation of the variable 
             around its mean calculated over all cycles where m_ps is the 
-            number of time measurements per cycle and n is the number of 
+            number of time Data from Jensen et. al. per cycle and n is the number of 
             spatial positions.
         omegat (numpy array): 
             array of length m_ps with the mean of the phase angles omega * t 
-            where m_ps is the  number of time measurements per cycle
+            where m_ps is the  number of time Data from Jensen et. al. per cycle
     """
     #Copy the input arrays so that they don't get altered outside the function
     var = var.copy()
@@ -273,7 +273,7 @@ if 'struct_mdl1' in globals():
     i_ph_c1_mdl = [np.argwhere(omegat_c1>=start_ang+np.deg2rad(pa-.5))[0][0] 
                        for pa in phase_angles]
     i_ph_c1_mdl_cont = np.argwhere((omegat_c1>=start_ang-np.deg2rad(1)) 
-                                   & (omegat_c1<=start_ang+np.deg2rad(180))).flatten() 
+                                   & (omegat_c1<=start_ang+np.deg2rad(360))).flatten() 
     
     #Theoretical velocity
     delta_1_c1 = np.sqrt(2*nu/omega)   #Eq. 5.13
@@ -283,7 +283,7 @@ if 'struct_mdl1' in globals():
                          -struct_mdl1.y.reshape(1,-1)/delta_1_c1)      #Eq. 5.12
     
     #theoretical bed shear stress
-    tau_0_th_c1 = (np.sqrt(2)*mu*struct_mdl1.U0m)/delta_1_c1 * np.sin(omegat_c1+np.pi+4)    #Eq. 5.20
+    tau_0_th_c1 = (np.sqrt(2)*mu*struct_mdl1.U0m)/delta_1_c1 * np.sin(omegat_c1+np.pi/4)    #Eq. 5.20
 
 if replot_tasks["C1"]:
     if not 'struct_mdl1' in globals():
@@ -294,22 +294,39 @@ if replot_tasks["C1"]:
     for i,i_p in enumerate(i_ph_c1_mdl):
         ax.plot(struct_mdl1.u[i_p,:]/struct_mdl1.U0m, 
                 struct_mdl1.y/case_tbl.loc[case, 'a'],
-                 label = r"$\omega t = " + f"{phase_angles[i]}" 
-                        + r"\:\unit{\degree}$ -- model",
-                 zorder=3)
-    for i,i_p in enumerate(i_ph_c1_mdl):
+                label=f"Model {i}", ls="-", zorder=3)
         ax.plot(u_th_c1[i_p,:]/struct_mdl1.U0m, 
-                struct_mdl1.y/case_tbl.loc[case, 'a'],
-                 label = r"$\omega t = " + f"{phase_angles[i]}" 
-                        + r"\:\unit{\degree}$ -- theoretical",
-                 alpha=.5, zorder=2)
+                struct_mdl1.y/case_tbl.loc[case, 'a'], 
+                label=f"Theory {i}", ls="--", zorder=2)
+    
+    #Labels
+    ax.text(0.05, 0.02, 
+            r"$\omega t=0\:\unit{\degree}$",
+            ha="left", va="center", 
+            bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
+    ax.text(0.8, 0.013, 
+            r"$45\:\unit{\degree}$",
+            ha="left", va="bottom", 
+            bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
+    ax.text(.95, 0.013, 
+            r"$90\:\unit{\degree}$",
+            ha="left", va="bottom", 
+            bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
+    ax.text(0.6, 0.01, 
+            r"$135\:\unit{\degree}$",
+            ha="right", va="bottom", 
+            bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
     
     #Formatting
     ax.set_ylabel(r'$y/a$')
     ax.set_xlabel(r'$\frac{u}{U_{0m}}$',
                    fontsize =  1.5*mpl.rcParams['axes.labelsize'])
     ax.grid(zorder=1)
-    ax.legend(loc="upper left", ncols=2, bbox_to_anchor=(1.05, 1))
+    ax.set_ylim([0,6e-2])
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles=handles[:2], 
+              labels = ["Model", "Laminar theory"], 
+              loc="upper left", bbox_to_anchor=(.2, 1))
     
     fname = exp_fld+"Case_1_u_vs_y"
     fig.savefig(fname=fname+".svg")
@@ -326,14 +343,15 @@ if replot_tasks["C1"]:
              zorder=2)
     ax.plot(np.rad2deg(omegat_c1[i_ph_c1_mdl_cont]-start_ang),
             tau_0_th_c1[i_ph_c1_mdl_cont]/(rho*struct_mdl1.U0m**2), 
-            label="Theoretical",
+            label="Laminar Theory",
             zorder=2)
     
     #Formatting
     ax.set_ylabel(r'$\frac{\tau_0}{\rho \cdot U_{0m}^2}$',
                    fontsize = 1.5*mpl.rcParams['axes.labelsize'])
     ax.set_xlabel(r'$\omega t\:\unit{[\degree]}$')
-    ax.set_xticks(np.arange(0,181,10))
+    ax.set_xlim([-5,365])
+    ax.set_xticks(np.arange(0,361,20))
     ax.grid(zorder=1)
     ax.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
     
@@ -367,7 +385,7 @@ if 'struct_mdl2' in globals():
     f_w_ast_mdl_c2 = 2*struct_mdl2.tau0/struct_mdl2.rho \
                    / (struct_mdl2.U0m**2 
                       * np.sin(omegat_c2 + np.pi/4))        #Eq.5.22
-    f_w_lam_c2 = .035/case_tbl.loc[case, "Re"]**.16         #Eq.5.59
+    f_w_lam_c2 = 2/np.sqrt(case_tbl.loc[case, "Re"])         #Eq.5.59
        
 if replot_tasks["C2"]:
     if not 'struct_mdl2' in globals():
@@ -385,7 +403,7 @@ if replot_tasks["C2"]:
             zorder=2)
     ax.scatter(struct_meas2.omegat_tau0,
                struct_meas2.tau0/(struct_meas2.rho*struct_meas2.U0m**2),
-               label="Measurements",
+               label="Data from Jensen et. al.",
                marker= "+", s=150, c="k", zorder=2)
     
     #Formatting
@@ -411,7 +429,7 @@ if replot_tasks["C2"]:
             zorder=2)
     ax.scatter(struct_meas2.omegat_tau0,
                f_w_ast_meas_c2, 
-               label="Measurements",
+               label="Data from Jensen et. al.",
                marker= "+", s=150, c="k", zorder=2)
     ax.axhline(f_w_lam_c2, ls="--", lw=1.8, c="k")
     ax.text(.05, f_w_lam_c2*1.2,  
@@ -490,7 +508,7 @@ if replot_tasks["C3"]:
         ax.scatter(struct_meas3.u[:,i_ph_c3_meas[i]]/struct_meas3.U0m,
                    struct_meas3.y_u/case_tbl.loc[case, "a"],
                    label = r"$\omega t = " + f"{phase_i}" 
-                          + r"\:\unit{\degree}$ -- Measurements", 
+                          + r"\:\unit{\degree}$ -- Data from Jensen et. al.", 
                    zorder=2, **ms)
 
     #Formatting
@@ -508,93 +526,45 @@ if replot_tasks["C3"]:
                                                    # inclusion in LaTeX
     plt.close(fig)
     
-    #Plot k/U_om^2 over y/a (all in one plot)
-    fig, ax = plt.subplots()
-    for i,phase_i in enumerate(phase_angles):
-        ax.plot(struct_mdl3.k[i_ph_c3_mdl[i],:]/struct_mdl3.U0m**2,
-                struct_mdl3.y/case_tbl.loc[case, "a"],
-                label = r"$\omega t = " + f"{phase_i}" 
-                        + r"\:\unit{\degree}$ -- Model",
-                zorder=2)
-
-    for i,phase_i in enumerate(phase_angles):
-        ms = mss[markers[i]] if mss.get(markers[i]) else mss["default"]
-        ax.scatter(k_meas_c3[:,i_ph_c3_meas[i]]/struct_meas3.U0m**2,
-                   struct_meas3.y_uuvv/case_tbl.loc[case, "a"],
-                   label = r"$\omega t = " + f"{phase_i}" 
-                          + r"\:\unit{\degree}$ -- Measurements", 
-                   zorder=2, **ms)
-    
-# =============================================================================
-#     ax.axvline (delta_c3/case_tbl.loc[case, "a"], c="k", ls="--", lw=1.2)
-# =============================================================================
-    
-    #Formatting
-    ax.set_xlabel(r'$\frac{k}{U_{0m}^2}$',
-                  fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-    ax.set_ylabel(r'$y/a$')
-    ax.grid(zorder=1)
-    # ax.set_yscale("log")
-    ax.legend(loc="upper right", ncols=2)
-    
-    fname = exp_fld+"Case_3_k_vs_y"
-    fig.savefig(fname=fname+".svg")
-    fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
-    fig.savefig(fname+".pgf")                     # Save PGF file for text 
-                                                   # inclusion in LaTeX
-    plt.close(fig)
-    
     #Plot k/U_om^2 over y/a (separate plots)
+    fig, ax = plt.subplots(1,4,sharey=True)
+    xmax = 1e-3*(np.ceil(np.max(struct_mdl3.k[i_ph_c3_mdl,:]
+                                /struct_mdl3.U0m**2)/1e-3)+1)
+    ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
+                                /case_tbl.loc[case, "a"])/1e-2))
     for i,phase_i in enumerate(phase_angles):
-        fig, ax = plt.subplots()
-        ax.plot(struct_mdl3.k[i_ph_c3_mdl[i],:]/struct_mdl3.U0m**2,
+        ax[i].plot(struct_mdl3.k[i_ph_c3_mdl[i],:]/struct_mdl3.U0m**2,
                 struct_mdl3.y/case_tbl.loc[case, "a"],
                 label = r"Model",
                 zorder=2)
         
-        ax.scatter(k_meas_c3[:,i_ph_c3_meas[i]]/struct_meas3.U0m**2,
+        ax[i].scatter(k_meas_c3[:,i_ph_c3_meas[i]]/struct_meas3.U0m**2,
                    struct_meas3.y_uuvv/case_tbl.loc[case, "a"],
-                   label = r"Measurements", 
+                   label = r"Data from Jensen et. al.", 
                    zorder=2, **mss["+"])
         
         #Formatting
-        ax.set_xlabel(r'$\frac{k}{U_{0m}^2}$',
+        if i == 0:
+            ax[i].set_title(r"$\omega t = " + f"{phase_i}"
+                            + r"\:\unit{\degree}$", pad = 6)
+        else:
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$",
+                            pad = 22)
+        ax[i].set_xlabel(r'$\frac{k}{U_{0m}^2}$',
                       fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-        ax.set_ylabel(r'$y/a$')
-        ax.grid(zorder=1)
-        ax.legend(loc="upper right")
+        if i == 0:
+            ax[i].set_ylabel(r'$y/a$')
+        ax[i].grid(zorder=1)
+        ax[i].set_xlim([0, xmax])
+        ax[i].set_ylim([0, ya_max])
+        ax[i].set_xticks(np.arange(0,xmax+1e-3, 2e-3))
+        ax[i].ticklabel_format(axis="both", style='scientific', 
+                               scilimits=(0, 0))
         
-        fname = exp_fld+f"Case_3_k_vs_y_{phase_i}deg"
-        fig.savefig(fname=fname+".svg")
-        fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
-        fig.savefig(fname+".pgf")                     # Save PGF file for text 
-                                                       # inclusion in LaTeX
-        plt.close(fig)
-    
-    #Plot Reynolds stresses over y/a (all in one plot)
-    fig, ax = plt.subplots()
-    for i,phase_i in enumerate(phase_angles):
-        ax.plot(rs_mdl_c3[i,:],
-                struct_mdl3.y/case_tbl.loc[case, "a"],
-                label = r"$\omega t = " + f"{phase_i}" 
-                        + r"\:\unit{\degree}$ -- Model",
-                zorder=2)
-    for i,i_p in enumerate(phase_angles):
-        ms = mss[markers[i]] if mss.get(markers[i]) else mss["default"]
-        ax.scatter(rs_meas_c3[:,i],
-                   struct_meas3.y_uv/case_tbl.loc[case, "a"],
-                   label = r"$\omega t = " + f"{phase_i}" 
-                          + r"\:\unit{\degree}$ -- Measurements", 
-                   zorder=2, **ms)
-
-    #Formatting
-    ax.set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
-                  fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-    ax.set_ylabel(r'$y/a$')
-    ax.grid(zorder=1)
-    ax.legend(loc="upper right", ncols=2)
-    
-    fname = exp_fld+"Case_3_rs_vs_y"
+        if i == len(phase_angles)-1:
+            ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
+        
+    fname = exp_fld+f"Case_3_k_vs_y"
     fig.savefig(fname=fname+".svg")
     fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
     fig.savefig(fname+".pgf")                     # Save PGF file for text 
@@ -602,31 +572,46 @@ if replot_tasks["C3"]:
     plt.close(fig)
     
     #Plot Reynolds stresses over y/a (separate plots)
+    fig, ax = plt.subplots(1,4,sharey=True)
+    xmin = 5e-4*(np.floor(min(np.min(rs_mdl_c3), np.min(rs_meas_c3))/5e-4))
+    xmax = 5e-4*(np.ceil(np.max(rs_mdl_c3)/5e-4))
     for i,phase_i in enumerate(phase_angles):
-        fig, ax = plt.subplots()
-        ax.plot(rs_mdl_c3[i,:],
+        ax[i].plot(rs_mdl_c3[i,:],
                 struct_mdl3.y/case_tbl.loc[case, "a"],
                 label = r"Model",
                 zorder=2)
         
-        ax.scatter(rs_meas_c3[:,i],
+        ax[i].scatter(rs_meas_c3[:,i],
                    struct_meas3.y_uv/case_tbl.loc[case, "a"],
-                   label = r"Measurements", 
+                   label = r"Data from Jensen et. al.", 
                    zorder=2, **mss["+"])
 
         #Formatting
-        ax.set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
+        if i == 0:
+            ax[i].set_title(r"$\omega t = " + f"{phase_i}"
+                            + r"\:\unit{\degree}$", pad = 6)
+        else:
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$",
+                            pad = 22)
+        ax[i].set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
                       fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-        ax.set_ylabel(r'$y/a$')
-        ax.grid(zorder=1)
-        ax.legend(loc="upper right")
+        if i == 0:
+            ax[i].set_ylabel(r'$y/a$')
+        ax[i].grid(zorder=1)
+        ax[i].set_xlim([xmin, xmax])
+        ax[i].set_ylim([0, ya_max])
+        # ax[i].set_xticks(np.arange(xmin,xmax, 5e-4))
+        ax[i].ticklabel_format(axis="both", style='scientific', 
+                               scilimits=(0, 0))
+        if i == len(phase_angles)-1:
+            ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
         
-        fname = exp_fld+f"Case_3_rs_vs_y_{phase_i}_deg"
-        fig.savefig(fname=fname+".svg")
-        fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
-        fig.savefig(fname+".pgf")                     # Save PGF file for text 
-                                                       # inclusion in LaTeX
-        plt.close(fig)
+    fname = exp_fld+f"Case_3_rs_vs_y"
+    fig.savefig(fname=fname+".svg")
+    fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
+    fig.savefig(fname+".pgf")                     # Save PGF file for text 
+                                                   # inclusion in LaTeX
+    plt.close(fig)
     
     #Plot tau_0/(rho*struct_mdl3.U0m^2) over omega*t
     fig, ax = plt.subplots()
@@ -636,7 +621,7 @@ if replot_tasks["C3"]:
             zorder=2)
     ax.scatter(struct_meas3.omegat_tau0[i_ph_c3_meas_cont],
                struct_meas3.tau0[i_ph_c3_meas_cont]/struct_meas3.U0m**2,
-               label = r"Measurements", 
+               label = r"Data from Jensen et. al.", 
                zorder=2, **mss["+"])
     
     #Formatting
@@ -705,7 +690,7 @@ if replot_tasks["C4"]:
         ax.scatter(struct_meas4.u[:,i_ph_c4_meas[i]]/struct_meas4.U0m,
                    struct_meas4.y_u/case_tbl.loc[case, "a"],
                    label = r"$\omega t = " + f"{phase_i}" 
-                          + r"\:\unit{\degree}$ -- Measurements", 
+                          + r"\:\unit{\degree}$ -- Data from Jensen et. al.", 
                    zorder=2, **ms)
 
     #Formatting
@@ -723,92 +708,45 @@ if replot_tasks["C4"]:
                                                    # inclusion in LaTeX
     plt.close(fig)
     
-    #Plot k/U_om^2 over y/a (all in one plot)
-    fig, ax = plt.subplots()
-    for i,phase_i in enumerate(phase_angles):
-        ax.plot(struct_mdl4.k[i_ph_c4_mdl[i],:]/struct_mdl4.U0m**2,
-                struct_mdl4.y/case_tbl.loc[case, "a"],
-                label = r"$\omega t = " + f"{phase_i}" 
-                        + r"\:\unit{\degree}$ -- Model",
-                zorder=2)
-    for i,phase_i in enumerate(phase_angles):
-        ms = mss[markers[i]] if mss.get(markers[i]) else mss["default"]
-        ax.scatter(k_meas_c4[:,i_ph_c4_meas[i]]/struct_meas4.U0m**2,
-                   struct_meas4.y_uuvv/case_tbl.loc[case, "a"],
-                   label = r"$\omega t = " + f"{phase_i}" 
-                          + r"\:\unit{\degree}$ -- Measurements", 
-                   zorder=2, **ms)
-    
-# =============================================================================
-#     ax.axvline (delta_c4/case_tbl.loc[case, "a"], c="k", ls="--", lw=1.2)
-# =============================================================================
-    
-    #Formatting
-    ax.set_xlabel(r'$\frac{k}{U_{0m}^2}$',
-                  fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-    ax.set_ylabel(r'$y/a$')
-    ax.grid(zorder=1)
-    # ax.set_yscale("log")
-    ax.legend(loc="upper right", ncols=2)
-    
-    fname = exp_fld+"Case_4_k_vs_y"
-    fig.savefig(fname=fname+".svg")
-    fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
-    fig.savefig(fname+".pgf")                     # Save PGF file for text 
-                                                   # inclusion in LaTeX
-    plt.close(fig)
-    
     #Plot k/U_om^2 over y/a (separate plots)
+    fig, ax = plt.subplots(1,4,sharey=True)
+    xmax = 1e-3*(np.ceil(np.max(struct_mdl4.k[i_ph_c4_mdl,:]
+                                /struct_mdl4.U0m**2)/1e-3)+1)
+    ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
+                                /case_tbl.loc[case, "a"])/1e-2))
     for i,phase_i in enumerate(phase_angles):
-        fig, ax = plt.subplots()
-        ax.plot(struct_mdl4.k[i_ph_c4_mdl[i],:]/struct_mdl4.U0m**2,
+        ax[i].plot(struct_mdl4.k[i_ph_c4_mdl[i],:]/struct_mdl4.U0m**2,
                 struct_mdl4.y/case_tbl.loc[case, "a"],
                 label = r"Model",
                 zorder=2)
         
-        ax.scatter(k_meas_c4[:,i_ph_c4_meas[i]]/struct_meas4.U0m**2,
+        ax[i].scatter(k_meas_c4[:,i_ph_c4_meas[i]]/struct_meas4.U0m**2,
                    struct_meas4.y_uuvv/case_tbl.loc[case, "a"],
-                   label = r"Measurements", 
+                   label = r"Data from Jensen et. al.", 
                    zorder=2, **mss["+"])
     
         #Formatting
-        ax.set_xlabel(r'$\frac{k}{U_{0m}^2}$',
+        if i == 0:
+            ax[i].set_title(r"$\omega t = " + f"{phase_i}"
+                            + r"\:\unit{\degree}$", pad = 6)
+        else:
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$",
+                            pad = 22)
+        ax[i].set_xlabel(r'$\frac{k}{U_{0m}^2}$',
                       fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-        ax.set_ylabel(r'$y/a$')
-        ax.grid(zorder=1)
-        ax.legend(loc="upper right")
+        if i == 0:
+            ax[i].set_ylabel(r'$y/a$')
+        ax[i].grid(zorder=1)
+        ax[i].set_xlim([0, xmax])
+        ax[i].set_ylim([0, ya_max])
+        # ax[i].set_xticks(np.arange(0,xmax+1e-3, 2.5e-3))
+        ax[i].ticklabel_format(axis="both", style='scientific', 
+                               scilimits=(0, 0))
         
-        fname = exp_fld+f"Case_4_k_vs_y_{phase_i}deg"
-        fig.savefig(fname=fname+".svg")
-        fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
-        fig.savefig(fname+".pgf")                     # Save PGF file for text 
-                                                       # inclusion in LaTeX
-        plt.close(fig)
-    
-    #Plot Reynolds stresses over y/a (all in one plot)
-    fig, ax = plt.subplots()
-    for i,phase_i in enumerate(phase_angles):
-        ax.plot(rs_mdl_c4[i,:],
-                struct_mdl4.y/case_tbl.loc[case, "a"],
-                label = r"$\omega t = " + f"{phase_i}" 
-                        + r"\:\unit{\degree}$ -- Model",
-                zorder=2)
-    for i,phase_i in enumerate(phase_angles):
-        ms = mss[markers[i]] if mss.get(markers[i]) else mss["default"]
-        ax.scatter(rs_meas_c4[:,i],
-                   struct_meas4.y_uv/case_tbl.loc[case, "a"],
-                   label = r"$\omega t = " + f"{phase_i}" 
-                          + r"\:\unit{\degree}$ -- Measurements", 
-                   zorder=2, **ms)
-
-    #Formatting
-    ax.set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
-                  fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-    ax.set_ylabel(r'$y/a$')
-    ax.grid(zorder=1)
-    ax.legend(loc="upper right", ncols=2)
-    
-    fname = exp_fld+"Case_4_rs_vs_y"
+        if i == len(phase_angles)-1:
+            ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
+        
+    fname = exp_fld+f"Case_4_k_vs_y"
     fig.savefig(fname=fname+".svg")
     fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
     fig.savefig(fname+".pgf")                     # Save PGF file for text 
@@ -816,30 +754,44 @@ if replot_tasks["C4"]:
     plt.close(fig)
     
     #Plot Reynolds stresses over y/a (separate plots)
+    fig, ax = plt.subplots(1,4,sharey=True)
+    xmin = 1e-3*(np.floor(min(np.min(rs_mdl_c4), np.min(rs_meas_c4))/1e-3))
+    xmax = 1e-3*(np.ceil(min(np.max(rs_mdl_c4), np.max(rs_meas_c4))/1e-3)+1)
     for i,phase_i in enumerate(phase_angles):
-        fig, ax = plt.subplots()
-        ax.plot(rs_mdl_c4[i,:],
+        ax[i].plot(rs_mdl_c4[i,:],
                 struct_mdl4.y/case_tbl.loc[case, "a"],
                 label = r"Model",
                 zorder=2)
-        ax.scatter(rs_meas_c4[:,i],
+        ax[i].scatter(rs_meas_c4[:,i],
                    struct_meas4.y_uv/case_tbl.loc[case, "a"],
-                   label = r"Measurements", 
+                   label = r"Data from Jensen et. al.", 
                    zorder=2, **mss["+"])
 
         #Formatting
-        ax.set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
+        if i == 0:
+            ax[i].set_title(r"$\omega t = " + f"{phase_i}"
+                            + r"\:\unit{\degree}$", pad = 6)
+        else:
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$",
+                            pad = 22)
+        ax[i].set_xlabel(r'$\frac{-\overline{u^\prime v^\prime}}{U_{0m}^2}$',
                       fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-        ax.set_ylabel(r'$y/a$')
-        ax.grid(zorder=1)
-        ax.legend(loc="upper right")
+        if i == 0:
+            ax[i].set_ylabel(r'$y/a$')
+        ax[i].grid(zorder=1)
+        ax[i].set_xlim([xmin, xmax])
+        ax[i].set_ylim([0, ya_max])
+        ax[i].ticklabel_format(axis="both", style='scientific', 
+                               scilimits=(0, 0))
+        if i == len(phase_angles)-1:
+            ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
         
-        fname = exp_fld+f"Case_4_rs_vs_y_{phase_i}deg"
-        fig.savefig(fname=fname+".svg")
-        fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
-        fig.savefig(fname+".pgf")                     # Save PGF file for text 
-                                                       # inclusion in LaTeX
-        plt.close(fig)
+    fname = exp_fld+f"Case_4_rs_vs_y"
+    fig.savefig(fname=fname+".svg")
+    fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
+    fig.savefig(fname+".pgf")                     # Save PGF file for text 
+                                                   # inclusion in LaTeX
+    plt.close(fig)
     
     #Plot tau_0/(rho*struct_mdl4.U0m^2) over omega*t
     fig, ax = plt.subplots()
@@ -849,7 +801,7 @@ if replot_tasks["C4"]:
             zorder=2)
     ax.scatter(struct_meas4.omegat_tau0[i_ph_c4_meas_cont],
                struct_meas4.tau0[i_ph_c4_meas_cont]/struct_meas4.U0m**2,
-               label = r"Measurements", 
+               label = r"Data from Jensen et. al.", 
                zorder=2, **mss["+"])
 
     #Formatting
@@ -889,11 +841,11 @@ if replot_tasks["T7"]:
             zorder=2)
     ax.scatter(k_meas_c3[:,i_ph_c3_meas[2]]/struct_meas3.U0m**2,
                struct_meas3.y_uuvv/case_tbl.loc["3", "a"],
-               label = r"Measurements -- Smooth wall", 
+               label = r"Data from Jensen et. al. -- Smooth wall", 
                zorder=2, **mss["+"])
     ax.scatter(k_meas_c4[:,i_ph_c4_meas[2]]/struct_meas4.U0m**2,
                struct_meas4.y_uuvv/case_tbl.loc["4", "a"],
-               label = r"Measurements -- Rough wall", 
+               label = r"Data from Jensen et. al. -- Rough wall", 
                zorder=2, **mss["1"])
 
     #Formatting

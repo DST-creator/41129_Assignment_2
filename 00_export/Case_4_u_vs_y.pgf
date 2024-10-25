@@ -30,7 +30,7 @@
 \begingroup%
 \makeatletter%
 \begin{pgfpicture}%
-\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{17.478843in}{9.942638in}}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{18.668809in}{9.942638in}}%
 \pgfusepath{use as bounding box, clip}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -42,8 +42,8 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{0.000000in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{17.478843in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{17.478843in}{9.942638in}}%
+\pgfpathlineto{\pgfqpoint{18.668809in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{18.668809in}{9.942638in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{9.942638in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{0.000000in}}%
 \pgfpathclose%
@@ -2964,10 +2964,10 @@
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{9.648003in}{8.047320in}}%
-\pgfpathlineto{\pgfqpoint{17.323287in}{8.047320in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{17.378843in}{8.047320in}}{\pgfqpoint{17.378843in}{8.102876in}}%
-\pgfpathlineto{\pgfqpoint{17.378843in}{9.648193in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{17.378843in}{9.703749in}}{\pgfqpoint{17.323287in}{9.703749in}}%
+\pgfpathlineto{\pgfqpoint{18.513253in}{8.047320in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{18.568809in}{8.047320in}}{\pgfqpoint{18.568809in}{8.102876in}}%
+\pgfpathlineto{\pgfqpoint{18.568809in}{9.648193in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{18.568809in}{9.703749in}}{\pgfqpoint{18.513253in}{9.703749in}}%
 \pgfpathlineto{\pgfqpoint{9.648003in}{9.703749in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{9.592447in}{9.703749in}}{\pgfqpoint{9.592447in}{9.648193in}}%
 \pgfpathlineto{\pgfqpoint{9.592447in}{8.102876in}}%
@@ -3073,7 +3073,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=14.073356in,y=9.394274in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$\omega t = 0\:\unit{\degree}$ -- Measurements}}%
+\pgftext[x=14.073356in,y=9.394274in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$\omega t = 0\:\unit{\degree}$ -- Data from Jensen et. al.}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -3102,7 +3102,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=14.073356in,y=9.001000in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$\omega t = 45\:\unit{\degree}$ -- Measurements}}%
+\pgftext[x=14.073356in,y=9.001000in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$\omega t = 45\:\unit{\degree}$ -- Data from Jensen et. al.}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -3127,7 +3127,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=14.073356in,y=8.607727in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$\omega t = 90\:\unit{\degree}$ -- Measurements}}%
+\pgftext[x=14.073356in,y=8.607727in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$\omega t = 90\:\unit{\degree}$ -- Data from Jensen et. al.}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -3153,7 +3153,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=14.073356in,y=8.214453in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$\omega t = 135\:\unit{\degree}$ -- Measurements}}%
+\pgftext[x=14.073356in,y=8.214453in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}$\omega t = 135\:\unit{\degree}$ -- Data from Jensen et. al.}}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

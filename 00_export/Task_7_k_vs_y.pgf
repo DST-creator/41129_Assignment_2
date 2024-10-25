@@ -1042,16 +1042,16 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{5.389504in}{7.317960in}}%
+\pgfpathmoveto{\pgfqpoint{4.169901in}{7.317960in}}%
 \pgfpathlineto{\pgfqpoint{13.521614in}{7.317960in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{13.577170in}{7.317960in}}{\pgfqpoint{13.577170in}{7.373516in}}%
 \pgfpathlineto{\pgfqpoint{13.577170in}{8.132286in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{13.577170in}{8.187842in}}{\pgfqpoint{13.521614in}{8.187842in}}%
-\pgfpathlineto{\pgfqpoint{5.389504in}{8.187842in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{5.333949in}{8.187842in}}{\pgfqpoint{5.333949in}{8.132286in}}%
-\pgfpathlineto{\pgfqpoint{5.333949in}{7.373516in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{5.333949in}{7.317960in}}{\pgfqpoint{5.389504in}{7.317960in}}%
-\pgfpathlineto{\pgfqpoint{5.389504in}{7.317960in}}%
+\pgfpathlineto{\pgfqpoint{4.169901in}{8.187842in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{4.114346in}{8.187842in}}{\pgfqpoint{4.114346in}{8.132286in}}%
+\pgfpathlineto{\pgfqpoint{4.114346in}{7.373516in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{4.114346in}{7.317960in}}{\pgfqpoint{4.169901in}{7.317960in}}%
+\pgfpathlineto{\pgfqpoint{4.169901in}{7.317960in}}%
 \pgfpathclose%
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
@@ -1062,16 +1062,16 @@
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{5.445060in}{7.975589in}}%
-\pgfpathlineto{\pgfqpoint{5.722838in}{7.975589in}}%
-\pgfpathlineto{\pgfqpoint{6.000616in}{7.975589in}}%
+\pgfpathmoveto{\pgfqpoint{4.225457in}{7.975589in}}%
+\pgfpathlineto{\pgfqpoint{4.503235in}{7.975589in}}%
+\pgfpathlineto{\pgfqpoint{4.781012in}{7.975589in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.222838in,y=7.878367in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Model -- Smooth wall}}%
+\pgftext[x=5.003235in,y=7.878367in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Model -- Smooth wall}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -1080,16 +1080,16 @@
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{{4.440000pt}{1.920000pt}}{0.000000pt}%
-\pgfpathmoveto{\pgfqpoint{5.445060in}{7.582315in}}%
-\pgfpathlineto{\pgfqpoint{5.722838in}{7.582315in}}%
-\pgfpathlineto{\pgfqpoint{6.000616in}{7.582315in}}%
+\pgfpathmoveto{\pgfqpoint{4.225457in}{7.582315in}}%
+\pgfpathlineto{\pgfqpoint{4.503235in}{7.582315in}}%
+\pgfpathlineto{\pgfqpoint{4.781012in}{7.582315in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.222838in,y=7.485093in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Model -- Rough wall}}%
+\pgftext[x=5.003235in,y=7.485093in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Model -- Rough wall}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -1108,7 +1108,7 @@
 \pgfusepath{stroke,fill}%
 }%
 \begin{pgfscope}%
-\pgfsys@transformshift{9.543270in}{7.951284in}%
+\pgfsys@transformshift{8.323667in}{7.951284in}%
 \pgfsys@useobject{currentmarker}{}%
 \end{pgfscope}%
 \end{pgfscope}%
@@ -1116,7 +1116,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=10.043270in,y=7.878367in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Measurements -- Smooth wall}}%
+\pgftext[x=8.823667in,y=7.878367in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Data from Jensen et. al. -- Smooth wall}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -1137,7 +1137,7 @@
 \pgfusepath{stroke,fill}%
 }%
 \begin{pgfscope}%
-\pgfsys@transformshift{9.543270in}{7.558010in}%
+\pgfsys@transformshift{8.323667in}{7.558010in}%
 \pgfsys@useobject{currentmarker}{}%
 \end{pgfscope}%
 \end{pgfscope}%
@@ -1145,7 +1145,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=10.043270in,y=7.485093in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Measurements -- Rough wall}}%
+\pgftext[x=8.823667in,y=7.485093in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Data from Jensen et. al. -- Rough wall}}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%
