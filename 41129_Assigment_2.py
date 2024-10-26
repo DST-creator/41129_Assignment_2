@@ -19,10 +19,10 @@ import custom_markers
 
 exp_fld = "./00_export/"
 if not os.path.isdir(exp_fld): os.mkdir(exp_fld)
-replot_tasks = dict(C1=True, 
-                    C2=True,
-                    C3=True,
-                    C4=True,
+replot_tasks = dict(C1=False, 
+                    C2=False,
+                    C3=False,
+                    C4=False,
                     T7=True)
 
 #%% Global plot settings
@@ -875,6 +875,46 @@ if replot_tasks["T7"]:
     ax.legend(loc="upper right", ncols=2)
     
     fname = exp_fld+"Task_7_k_vs_y"
+    fig.savefig(fname=fname+".svg")
+    fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
+    fig.savefig(fname+".pgf")                     # Save PGF file for text 
+                                                   # inclusion in LaTeX
+    plt.close(fig)
+    
+    
+    #Plot u/U_om over y/a
+    ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
+                                /case_tbl.loc[case, "a"])/1e-2))
+    fig, ax = plt.subplots()
+    ax.plot(struct_mdl3.u[i_ph_c3_mdl[2],:]/struct_mdl3.U0m,
+            struct_mdl3.y/case_tbl.loc["3", "a"],
+            label = r"Model -- Smooth wall",
+            zorder=2)
+    ax.plot(struct_mdl4.u[i_ph_c4_mdl[2],:]/struct_mdl4.U0m,
+            struct_mdl4.y/case_tbl.loc["4", "a"],
+            label = r"Model -- Rough wall",
+            zorder=2)
+    ax.scatter(struct_meas3.u[:,i_ph_c3_meas[2]]/struct_meas3.U0m,
+               struct_meas3.y_u/case_tbl.loc["3", "a"],
+               label = r"Data from Jensen et. al. -- Smooth wall", 
+               zorder=2, **mss["+"])
+    ax.scatter(struct_meas4.u[:,i_ph_c4_meas[2]]/struct_meas4.U0m,
+               struct_meas4.y_u/case_tbl.loc["4", "a"],
+               label = r"Data from Jensen et. al. -- Rough wall", 
+               zorder=2, **mss["1"])
+
+    #Formatting
+    ax.set_xlabel(r'$\frac{u}{U_{0m}}$',
+                  fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+    ax.set_ylabel(r'$y/a$')
+    ax.grid(zorder=1)
+    ax.ticklabel_format(axis="both", style='scientific', 
+                           scilimits=(0, 0))
+    ax.set_ylim([0, ya_max])
+    # ax.set_yscale("log")
+    ax.legend(loc="upper left", ncols=2)
+    
+    fname = exp_fld+"Task_7_u_vs_y"
     fig.savefig(fname=fname+".svg")
     fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
     fig.savefig(fname+".pgf")                     # Save PGF file for text 
