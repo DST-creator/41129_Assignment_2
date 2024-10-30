@@ -30,7 +30,7 @@
 \begingroup%
 \makeatletter%
 \begin{pgfpicture}%
-\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{18.252813in}{7.848981in}}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{18.474686in}{7.848981in}}%
 \pgfusepath{use as bounding box, clip}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -42,8 +42,8 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{0.000000in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{18.252813in}{0.000000in}}%
-\pgfpathlineto{\pgfqpoint{18.252813in}{7.848981in}}%
+\pgfpathlineto{\pgfqpoint{18.474686in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{18.474686in}{7.848981in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{7.848981in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{0.000000in}}%
 \pgfpathclose%
@@ -1367,10 +1367,10 @@
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{15.391142in}{6.726404in}}%
-\pgfpathlineto{\pgfqpoint{18.097258in}{6.726404in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{18.152813in}{6.726404in}}{\pgfqpoint{18.152813in}{6.781959in}}%
-\pgfpathlineto{\pgfqpoint{18.152813in}{7.540729in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{18.152813in}{7.596285in}}{\pgfqpoint{18.097258in}{7.596285in}}%
+\pgfpathlineto{\pgfqpoint{18.319131in}{6.726404in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{18.374686in}{6.726404in}}{\pgfqpoint{18.374686in}{6.781959in}}%
+\pgfpathlineto{\pgfqpoint{18.374686in}{7.540729in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{18.374686in}{7.596285in}}{\pgfqpoint{18.319131in}{7.596285in}}%
 \pgfpathlineto{\pgfqpoint{15.391142in}{7.596285in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{15.335586in}{7.596285in}}{\pgfqpoint{15.335586in}{7.540729in}}%
 \pgfpathlineto{\pgfqpoint{15.335586in}{6.781959in}}%
@@ -1395,7 +1395,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=16.224475in,y=7.286810in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}Model}}%
+\pgftext[x=16.224475in,y=7.286810in,left,base]{\color{textcolor}{\rmfamily\fontsize{20.000000}{24.000000}\selectfont\catcode`\^=\active\def^{\ifmmode\sp\else\^{}\fi}\catcode`\%=\active\def%{\%}MatRANS Model}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%

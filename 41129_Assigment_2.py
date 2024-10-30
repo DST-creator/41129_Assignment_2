@@ -19,8 +19,8 @@ import custom_markers
 
 exp_fld = "./00_export/"
 if not os.path.isdir(exp_fld): os.mkdir(exp_fld)
-replot_tasks = dict(C1=False, 
-                    C2=False,
+replot_tasks = dict(C1=True, 
+                    C2=True,
                     C3=True,
                     C4=True,
                     T7=True)
@@ -139,7 +139,7 @@ for i in range(len(case_tbl)):
     
     if Re_i <= 1.5e5:  # Laminar flow
         case_tbl.at[case_tbl.index[i], 'f_w'] = 2 / np.sqrt(Re_i)  # Eq. 5.59
-    elif Re_i >= 5e5:  # Turbulent flow
+    elif Re_i >= 1e6:  # Turbulent flow
         if k_s_i == 0:  # Smooth wall
             case_tbl.at[case_tbl.index[i], 'f_w'] = 0.035 / (Re_i ** 0.16)  # Eq. 5.60
         else:  # Rough wall
@@ -151,8 +151,7 @@ for i in range(len(case_tbl)):
         case_tbl.at[case_tbl.index[i], 'f_w'] = max(f_w_turb, f_w_trans)
 
 #Calculate a
-case_tbl['a'] = [row.a_ks*row.k_s if not row.a_ks==np.inf 
-                 else row.Re/row.U_0m*nu                        #Eq. 5.1
+case_tbl['a'] = [row.Re/row.U_0m*nu                        #Eq. 5.1
                  for _,row in case_tbl.iterrows()]
 
 # Calculate U_fm
@@ -290,46 +289,35 @@ if replot_tasks["C1"]:
     if not 'struct_mdl1' in globals():
         print("Data missing for Case 1 - Plots not replotted")
     
-    #Plot u/U0m over y/a
-    fig, ax = plt.subplots(figsize=(10,10))
-    for i,i_p in enumerate(i_ph_c1_mdl):
-        ax.plot(struct_mdl1.u[i_p,:]/struct_mdl1.U0m, 
+    #Plot u/U_om over y/a
+    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    ya_max = 4.5e-2
+    for i,phase_i in enumerate(phase_angles):
+        i_p = i_ph_c1_mdl[i]
+        ax[i].plot(struct_mdl1.u[i_p,:]/struct_mdl1.U0m, 
                 struct_mdl1.y/case_tbl.loc[case, 'a'],
-                label=f"Model {i}", ls="-", zorder=3)
-        ax.plot(u_th_c1[i_p,:]/struct_mdl1.U0m, 
+                label=f"MatRANS Model", ls="-", zorder=3)
+        ax[i].plot(u_th_c1[i_p,:]/struct_mdl1.U0m, 
                 struct_mdl1.y/case_tbl.loc[case, 'a'], 
-                label=f"Theory {i}", ls="--", zorder=2)
-    
-    #Labels
-    ax.text(0.07, 0.013, 
-            r"$\omega t=0\:\unit{\degree}$",
-            ha="left", va="bottom", 
-            bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
-    ax.text(0.8, 0.013, 
-            r"$45\:\unit{\degree}$",
-            ha="left", va="bottom", 
-            bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
-    ax.text(.95, 0.013, 
-            r"$90\:\unit{\degree}$",
-            ha="left", va="bottom", 
-            bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
-    ax.text(0.6, 0.01, 
-            r"$135\:\unit{\degree}$",
-            ha="right", va="bottom", 
-            bbox=dict(facecolor='w', alpha=0.5, edgecolor="none"))
-    
-    #Formatting
-    ax.set_ylabel(r'$y/a$')
-    ax.set_xlabel(r'$\frac{u}{U_{0m}}$',
-                   fontsize =  1.5*mpl.rcParams['axes.labelsize'])
-    ax.grid(zorder=1)
-    ax.set_ylim([0,4.5e-2])
-    ax.ticklabel_format(axis="y", style='scientific', 
-                           scilimits=(0, 0))
-    handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles=handles[:2], 
-              labels = ["Model", "Laminar theory"], 
-              loc="upper left", bbox_to_anchor=(.2, 1))
+                label=f"Laminar Theory", ls="--", zorder=2)
+
+        #Formatting
+        if i == 0:
+            ax[i].set_title(r"$\omega t = " + f"{phase_i}"
+                            + r"\:\unit{\degree}$", y=1.04)
+        else:
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$", y=1.04)
+        fig.supxlabel(r'$\frac{\overline{u}}{U_{0m}}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'],
+                      y=0, va="top")
+        if i == 0:
+            ax[i].set_ylabel(r'$y/a$')
+        ax[i].grid(zorder=1)
+        ax[i].set_ylim([0, ya_max])
+        ax[i].ticklabel_format(axis="y", style='sci', scilimits=(0, 0))
+        
+        if i == len(phase_angles)-1:
+            ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
     
     fname = exp_fld+"Case_1_u_vs_y"
     fig.savefig(fname=fname+".svg")
@@ -342,7 +330,7 @@ if replot_tasks["C1"]:
     fig, ax = plt.subplots()
     ax.plot(np.rad2deg(omegat_c1[i_ph_c1_mdl_cont]-start_ang),
              struct_mdl1.tau0[i_ph_c1_mdl_cont]/(rho*struct_mdl1.U0m**2), 
-             label="Model",
+             label="MatRANS Model",
              zorder=2)
     ax.plot(np.rad2deg(omegat_c1[i_ph_c1_mdl_cont]-start_ang),
             tau_0_th_c1[i_ph_c1_mdl_cont]/(rho*struct_mdl1.U0m**2), 
@@ -399,7 +387,7 @@ if replot_tasks["C2"]:
     fig, ax = plt.subplots()
     ax.plot(np.rad2deg(omegat_c2[i_ph_c2_mdl]-start_ang),
             (struct_mdl2.tau0[i_ph_c2_mdl]/(struct_mdl2.rho*struct_mdl2.U0m**2)), 
-            label="Model",
+            label="MatRANS Model",
             zorder=2)
     ax.plot(np.rad2deg(omegat_c2[i_ph_c2_mdl]-start_ang),
             (tau_0_th_c2[i_ph_c2_mdl]/(rho*struct_mdl2.U0m**2)), 
@@ -430,7 +418,7 @@ if replot_tasks["C2"]:
     fig, ax = plt.subplots()
     ax.plot(np.rad2deg(omegat_c2[i_ph_c2_mdl]-start_ang),
             f_w_ast_mdl_c2 [i_ph_c2_mdl], 
-            label="Model",
+            label="MatRANS Model",
             zorder=2)
     ax.scatter(struct_meas2.omegat_tau0,
                f_w_ast_meas_c2, 
@@ -481,8 +469,8 @@ if 'struct_mdl3' in globals():
     
     #Determine indices for the first half of the fifth cylcle
     i_ph_c3_mdl_cont = np.argwhere((omegat_c3>=start_ang-np.deg2rad(1)) 
-                           & (omegat_c3<=start_ang+np.deg2rad(180))).flatten()
-    i_ph_c3_meas_cont = np.argwhere(struct_meas3.omegat_tau0<=180).flatten()
+                           & (omegat_c3<=start_ang+np.deg2rad(360))).flatten()
+    i_ph_c3_meas_cont = np.argwhere(struct_meas3.omegat_tau0<=360).flatten()
     
     #Calculate turbulent kinetic energy
     k_meas_c3 = .65 * (struct_meas3.uu + struct_meas3.vv)  #Eq. 10.21 (cf. Assignment)
@@ -507,7 +495,7 @@ if replot_tasks["C3"]:
     for i,phase_i in enumerate(phase_angles):
         ax[i].plot(struct_mdl3.u[i_ph_c3_mdl[i],:]/struct_mdl3.U0m,
                 struct_mdl3.y/case_tbl.loc[case, "a"],
-                label = r"Model",
+                label = r"MatRANS Model",
                 zorder=2)
         ax[i].scatter(struct_meas3.u[:,i_ph_c3_meas[i]]/struct_meas3.U0m,
                    struct_meas3.y_u/case_tbl.loc[case, "a"],
@@ -529,8 +517,7 @@ if replot_tasks["C3"]:
             ax[i].set_ylabel(r'$y/a$')
         ax[i].grid(zorder=1)
         ax[i].set_ylim([0, ya_max])
-        ax[i].ticklabel_format(axis="y", style='scientific', 
-                               scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="y", style='sci', scilimits=(0, 0))
         
         if i == len(phase_angles)-1:
             ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
@@ -542,14 +529,56 @@ if replot_tasks["C3"]:
                                                    # inclusion in LaTeX
     plt.close(fig)
     
+    #Plot u/U_om over y/a (semilog)
+    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
+                                /case_tbl.loc[case, "a"])/1e-2))
+    for i,phase_i in enumerate(phase_angles):
+        ax[i].plot(struct_mdl3.u[i_ph_c3_mdl[i],:]/struct_mdl3.U0m,
+                struct_mdl3.y/case_tbl.loc[case, "a"],
+                label = r"MatRANS Model",
+                zorder=2)
+        ax[i].scatter(struct_meas3.u[:,i_ph_c3_meas[i]]/struct_meas3.U0m,
+                   struct_meas3.y_u/case_tbl.loc[case, "a"],
+                   label = r"Data from Jensen et. al.", 
+                   zorder=2, **mss["+"])
+
+        #Formatting
+        if i == 0:
+            ax[i].set_title(r"$\omega t = " + f"{phase_i}"
+                            + r"\:\unit{\degree}$", y=1.04)
+        else:
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$", y=1.04)
+        # ax.set_xlabel(r'$\frac{\overline{u}}{U_{0m}}$',
+        #               fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+        fig.supxlabel(r'$\frac{\overline{u}}{U_{0m}}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'],
+                      y=0, va="top")
+        if i == 0:
+            ax[i].set_ylabel(r'$y/a$')
+        ax[i].grid(zorder=1)
+        ax[i].set_ylim([0, ya_max])
+        ax[i].set_yscale('log')
+        
+        if i == len(phase_angles)-1:
+            ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
+    
+    fname = exp_fld+"Case_3_u_vs_y_log"
+    fig.savefig(fname=fname+".svg")
+    fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
+    fig.savefig(fname+".pgf")                     # Save PGF file for text 
+                                                   # inclusion in LaTeX
+    plt.close(fig)
+    
     #Plot k/U_om^2 over y/a (separate plots)
+    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
     xmax = 1e-3*(np.ceil(np.max(struct_mdl3.k[i_ph_c3_mdl,:]
                                 /struct_mdl3.U0m**2)/1e-3)+1)
     
     for i,phase_i in enumerate(phase_angles):
         ax[i].plot(struct_mdl3.k[i_ph_c3_mdl[i],:]/struct_mdl3.U0m**2,
                 struct_mdl3.y/case_tbl.loc[case, "a"],
-                label = r"Model",
+                label = r"MatRANS Model",
                 zorder=2)
         
         ax[i].scatter(k_meas_c3[:,i_ph_c3_meas[i]]/struct_meas3.U0m**2,
@@ -574,8 +603,8 @@ if replot_tasks["C3"]:
         ax[i].set_xlim([0, xmax])
         ax[i].set_ylim([0, ya_max])
         ax[i].set_xticks(np.arange(0,xmax+1e-3, 2e-3))
-        ax[i].ticklabel_format(axis="both", style='scientific', 
-                               scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="y", style='sci', scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="x", style="sci", scilimits=(-3, -3))
         
         if i == len(phase_angles)-1:
             ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
@@ -594,7 +623,7 @@ if replot_tasks["C3"]:
     for i,phase_i in enumerate(phase_angles):
         ax[i].plot(rs_mdl_c3[i,:],
                 struct_mdl3.y/case_tbl.loc[case, "a"],
-                label = r"Model",
+                label = r"MatRANS Model",
                 zorder=2)
         
         ax[i].scatter(rs_meas_c3[:,i],
@@ -619,8 +648,8 @@ if replot_tasks["C3"]:
         ax[i].set_xlim([xmin, xmax])
         ax[i].set_ylim([0, ya_max])
         # ax[i].set_xticks(np.arange(xmin,xmax, 5e-4))
-        ax[i].ticklabel_format(axis="both", style='scientific', 
-                               scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="y", style='sci', scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="x", style="sci", scilimits=(-3, -3))
         if i == len(phase_angles)-1:
             ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
         
@@ -632,10 +661,10 @@ if replot_tasks["C3"]:
     plt.close(fig)
     
     #Plot tau_0/(rho*struct_mdl3.U0m^2) over omega*t
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(20,8))
     ax.plot(np.rad2deg(omegat_c3[i_ph_c3_mdl_cont]-start_ang),
             struct_mdl3.tau0[i_ph_c3_mdl_cont]/struct_mdl3.U0m**2,
-            label = r"Model",
+            label = r"MatRANS Model",
             zorder=2)
     ax.scatter(struct_meas3.omegat_tau0[i_ph_c3_meas_cont],
                struct_meas3.tau0[i_ph_c3_meas_cont]/struct_meas3.U0m**2,
@@ -646,8 +675,9 @@ if replot_tasks["C3"]:
     ax.set_ylabel(r'$\frac{\tau_0}{\rho \cdot U_{0m}^2}$',
                    fontsize = 1.5*mpl.rcParams['axes.labelsize'])
     ax.set_xlabel(r'$\omega t\:\unit{[\degree]}$')
-    ax.set_xlim ([-5,185])
-    ax.set_xticks(np.arange(0,181,10))
+    ax.set_xlim ([-5,365])
+    ax.set_xticks(np.arange(0,361,10),
+                  labels=np.arange(0,361,10), rotation="vertical")
     ax.grid(zorder=1)
     ax.legend(loc="upper right")
     
@@ -675,9 +705,9 @@ if 'struct_mdl4' in globals():
                  for pa in phase_angles]
     
     #Determine indices for the first half of the fifth cylcle
-    i_ph_c4_mdl_cont = np.argwhere((omegat_c4>=start_ang) 
-                           & (omegat_c4<=start_ang+np.deg2rad(180))).flatten()
-    i_ph_c4_meas_cont = np.argwhere(struct_meas4.omegat_tau0<=180).flatten()
+    i_ph_c4_mdl_cont = np.argwhere((omegat_c4>=start_ang-np.deg2rad(.5)) 
+                           & (omegat_c4<=start_ang+np.deg2rad(360))).flatten()
+    i_ph_c4_meas_cont = np.argwhere(struct_meas4.omegat_tau0<=360).flatten()
     
     #Calculate turbulent kinetic energy
     k_meas_c4 = .65 * (struct_meas4.uu + struct_meas4.vv)  #Eq. 10.21 (cf. Assignment)
@@ -695,38 +725,6 @@ if replot_tasks["C4"]:
     if not 'struct_mdl4' in globals():
         print("Data missing for Case 4 - Plots not replotted")
 
-# =============================================================================
-#     #Plot u/U_om over y/a
-#     fig, ax = plt.subplots(figsize=(10,10))
-#     for i,phase_i in enumerate(phase_angles):
-#         ax.plot(struct_mdl4.u[i_ph_c4_mdl[i],:]/struct_mdl4.U0m,
-#                 struct_mdl4.y/case_tbl.loc[case, "a"],
-#                 label = r"$\omega t = " + f"{phase_i}" 
-#                         + r"\:\unit{\degree}$ -- Model",
-#                 zorder=2)
-#     for i,phase_i in enumerate(phase_angles):
-#         ms = mss[markers[i]] if mss.get(markers[i]) else mss["default"]
-#         ax.scatter(struct_meas4.u[:,i_ph_c4_meas[i]]/struct_meas4.U0m,
-#                    struct_meas4.y_u/case_tbl.loc[case, "a"],
-#                    label = r"$\omega t = " + f"{phase_i}" 
-#                           + r"\:\unit{\degree}$ -- Data from Jensen et. al.", 
-#                    zorder=2, **ms)
-# 
-#     #Formatting
-#     ax.set_xlabel(r'$\frac{\overline{u}}{U_{0m}}$',
-#                   fontsize = 1.5*mpl.rcParams['axes.labelsize'])
-#     ax.set_ylabel(r'$y/a$')
-#     ax.grid(zorder=1)
-#     ax.legend(loc="upper left", ncols=2,
-#               bbox_to_anchor=(1.05, 1))
-#     
-#     fname = exp_fld+"Case_4_u_vs_y"
-#     fig.savefig(fname=fname+".svg")
-#     fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
-#     fig.savefig(fname+".pgf")                     # Save PGF file for text 
-#                                                    # inclusion in LaTeX
-#     plt.close(fig)
-# =============================================================================
     #Plot u/U_om over y/a
     fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
     ya_max = 1e-2*(np.ceil(np.max(struct_meas4.y_uuvv
@@ -734,7 +732,7 @@ if replot_tasks["C4"]:
     for i,phase_i in enumerate(phase_angles):
         ax[i].plot(struct_mdl4.u[i_ph_c4_mdl[i],:]/struct_mdl4.U0m,
                 struct_mdl4.y/case_tbl.loc[case, "a"],
-                label = r"Model",
+                label = r"MatRANS Model",
                 zorder=2)
         ax[i].scatter(struct_meas4.u[:,i_ph_c4_meas[i]]/struct_meas4.U0m,
                    struct_meas4.y_u/case_tbl.loc[case, "a"],
@@ -756,13 +754,53 @@ if replot_tasks["C4"]:
             ax[i].set_ylabel(r'$y/a$')
         ax[i].grid(zorder=1)
         ax[i].set_ylim([0, ya_max])
-        ax[i].ticklabel_format(axis="y", style='scientific', 
-                               scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="y", style='sci', scilimits=(0, 0))
         
         if i == len(phase_angles)-1:
             ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
     
     fname = exp_fld+"Case_4_u_vs_y"
+    fig.savefig(fname=fname+".svg")
+    fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
+    fig.savefig(fname+".pgf")                     # Save PGF file for text 
+                                                   # inclusion in LaTeX
+    plt.close(fig)
+
+    #Plot u/U_om over y/a (semilog)
+    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    ya_max = 1e-2*(np.ceil(np.max(struct_meas4.y_uuvv
+                                /case_tbl.loc[case, "a"])/1e-2))
+    for i,phase_i in enumerate(phase_angles):
+        ax[i].plot(struct_mdl4.u[i_ph_c4_mdl[i],:]/struct_mdl4.U0m,
+                struct_mdl4.y/case_tbl.loc[case, "a"],
+                label = r"MatRANS Model",
+                zorder=2)
+        ax[i].scatter(struct_meas4.u[:,i_ph_c4_meas[i]]/struct_meas4.U0m,
+                   struct_meas4.y_u/case_tbl.loc[case, "a"],
+                   label = r"Data from Jensen et. al.", 
+                   zorder=2, **mss["+"])
+
+        #Formatting
+        if i == 0:
+            ax[i].set_title(r"$\omega t = " + f"{phase_i}"
+                            + r"\:\unit{\degree}$", y=1.04)
+        else:
+            ax[i].set_title(r"$" + f"{phase_i}" + r"\:\unit{\degree}$", y=1.04)
+        # ax.set_xlabel(r'$\frac{\overline{u}}{U_{0m}}$',
+        #               fontsize = 1.5*mpl.rcParams['axes.labelsize'])
+        fig.supxlabel(r'$\frac{\overline{u}}{U_{0m}}$',
+                      fontsize = 1.5*mpl.rcParams['axes.labelsize'],
+                      y=0, va="top")
+        if i == 0:
+            ax[i].set_ylabel(r'$y/a$')
+        ax[i].grid(zorder=1)
+        ax[i].set_ylim([0, ya_max])
+        ax[i].set_yscale('log')
+        
+        if i == len(phase_angles)-1:
+            ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
+    
+    fname = exp_fld+"Case_4_u_vs_y_log"
     fig.savefig(fname=fname+".svg")
     fig.savefig(fname+".pdf", format="pdf")       # Save PDF for inclusion
     fig.savefig(fname+".pgf")                     # Save PGF file for text 
@@ -777,7 +815,7 @@ if replot_tasks["C4"]:
     for i,phase_i in enumerate(phase_angles):
         ax[i].plot(struct_mdl4.k[i_ph_c4_mdl[i],:]/struct_mdl4.U0m**2,
                 struct_mdl4.y/case_tbl.loc[case, "a"],
-                label = r"Model",
+                label = r"MatRANS Model",
                 zorder=2)
         
         ax[i].scatter(k_meas_c4[:,i_ph_c4_meas[i]]/struct_meas4.U0m**2,
@@ -802,8 +840,8 @@ if replot_tasks["C4"]:
         ax[i].set_xlim([0, xmax])
         ax[i].set_ylim([0, ya_max])
         # ax[i].set_xticks(np.arange(0,xmax+1e-3, 2.5e-3))
-        ax[i].ticklabel_format(axis="both", style='scientific', 
-                               scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="y", style='sci', scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="x", style="sci", scilimits=(-3, -3))
         
         if i == len(phase_angles)-1:
             ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
@@ -822,7 +860,7 @@ if replot_tasks["C4"]:
     for i,phase_i in enumerate(phase_angles):
         ax[i].plot(rs_mdl_c4[i,:],
                 struct_mdl4.y/case_tbl.loc[case, "a"],
-                label = r"Model",
+                label = r"MatRANS Model",
                 zorder=2)
         ax[i].scatter(rs_meas_c4[:,i],
                    struct_meas4.y_uv/case_tbl.loc[case, "a"],
@@ -845,8 +883,9 @@ if replot_tasks["C4"]:
         ax[i].grid(zorder=1)
         ax[i].set_xlim([xmin, xmax])
         ax[i].set_ylim([0, ya_max])
-        ax[i].ticklabel_format(axis="both", style='scientific', 
-                               scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="y", style='sci', scilimits=(0, 0))
+        ax[i].ticklabel_format(axis="x", style="sci", scilimits=(-3, -3))
+        
         if i == len(phase_angles)-1:
             ax[i].legend(loc="upper left", bbox_to_anchor=(1.05,1))
         
@@ -858,10 +897,10 @@ if replot_tasks["C4"]:
     plt.close(fig)
     
     #Plot tau_0/(rho*struct_mdl4.U0m^2) over omega*t
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(20,8))
     ax.plot(np.rad2deg(omegat_c4[i_ph_c4_mdl_cont]-start_ang),
             struct_mdl4.tau0[i_ph_c4_mdl_cont]/struct_mdl4.U0m**2,
-            label = r"Model",
+            label = r"MatRANS Model",
             zorder=2)
     ax.scatter(struct_meas4.omegat_tau0[i_ph_c4_meas_cont],
                struct_meas4.tau0[i_ph_c4_meas_cont]/struct_meas4.U0m**2,
@@ -872,8 +911,9 @@ if replot_tasks["C4"]:
     ax.set_ylabel(r'$\frac{\tau_0}{\rho \cdot U_{0m}^2}$',
                    fontsize = 1.5*mpl.rcParams['axes.labelsize'])
     ax.set_xlabel(r'$\omega t\:\unit{[\degree]}$')
-    ax.set_xlim ([-5,185])
-    ax.set_xticks(np.arange(0,181,10))
+    ax.set_xlim ([-5,365])
+    ax.set_xticks(np.arange(0,361,10),
+                  labels=np.arange(0,361,10), rotation="vertical")
     ax.grid(zorder=1)
     ax.legend(loc="upper right")
 
@@ -934,7 +974,7 @@ if replot_tasks["T7"]:
     
     
     #Plot u/U_om over y/a
-    ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
+    ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_u
                                 /case_tbl.loc[case, "a"])/1e-2))
     fig, ax = plt.subplots()
     ax.plot(struct_mdl3.u[i_ph_c3_mdl[2],:]/struct_mdl3.U0m,

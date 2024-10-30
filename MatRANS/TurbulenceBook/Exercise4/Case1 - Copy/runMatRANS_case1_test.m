@@ -22,7 +22,7 @@ OutFileName = 'out_MatRANS.mat';
 
 % Grid input
 h_m = 0.145; % Height of model depth (m)
-dy0 = 3.35294e-05; % Near-wall grid size (m)
+dy0 = 0.000081; % Near-wall grid size (m)
 stretch = 1.05; y = [0]; ycount = 1; dy=dy0;
 while y(end) <= h_m
   ycount = ycount + 1; % Update counter
@@ -35,7 +35,7 @@ T = 9.72; % Wave period (s)
 c = 1.0; % Celerity (if streaming=1, used to calculate d/dx = -1/c*d/dt) (m/s)
 iwave = 1; % Wave signal, 0: Off, 1: 2nd-order Stokes signal, 2: Wave form of Abreu et al. (2010), 3: Solitary wave
 if iwave == 1 % Input for second-order Stokes signal, with free stream velocity: U_1m*sin(omega*t) - U_2m*cos(2*omega*t)
-  U_1m = 0.68; % Primary amplitude of free stream velocity, U0m (m/s)
+  U_1m = 0.23; % Primary amplitude of free stream velocity, U0m (m/s)
   U_2m = 0.0; % Amplitude of second harmonic free stream velocity (m/s)
 elseif iwave == 2 % Input for wave form of Abreu et al. (2010)
   U_1m = 1.0; % Total amplitude of free stream velocity signal
@@ -63,7 +63,7 @@ t_span = [0:dt:t2]; % Vector of time levels where output will be saved (s)
 
 % Sediment input
 d = 5e-6; % Grain size (m)
-k_s = dy0/10; % Nikuradse's equivalent sand grain roughness (m)
+k_s = 0; % Nikuradse's equivalent sand grain roughness (m)
 b = 2*d; % Reference height (m)
 s = 2.65; % Relative sediment density
 Shields_c0 = 0.045; % Critical Shields parameter (flat bed)
