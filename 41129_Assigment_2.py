@@ -38,7 +38,7 @@ mpl.rcParams['lines.color'] = "k"
 # mpl.rcParams['axes.prop_cycle'] = mpl.cycler('color', ['k', 'k', 'k', 'k'])
 #Cycle through linestyles with color black instead of different colors
 mpl.rcParams['axes.prop_cycle'] = mpl.cycler('color', ['k', 'k', 'k', 'k'])\
-                                + mpl.cycler('linestyle', ['-', '--', '-.', ':'])\
+                                + mpl.cycler('linestyle', ['-','--','-.',':'])\
                                 + mpl.cycler('linewidth', [1.2, 1.2, 1.3, 1.8])
 plt_marker = "d"
 #Settings for specific markers
@@ -63,7 +63,7 @@ mpl.rcParams['axes.titlesize'] = 30
 mpl.rcParams['legend.fontsize'] = 20
 
 #Padding
-mpl.rcParams['figure.subplot.top'] = .94    #Distance between suptitle and subplots
+mpl.rcParams['figure.subplot.top'] = .94 #Distance between suptitle and subplots
 mpl.rcParams['xtick.major.pad'] = 5         
 mpl.rcParams['ytick.major.pad'] = 5
 mpl.rcParams['axes.labelpad'] = 20
@@ -73,7 +73,7 @@ mpl.rcParams['text.usetex'] = True          #Use standard latex font
 mpl.rcParams['font.family'] = 'serif'  # LaTeX default font family
 mpl.rcParams["pgf.texsystem"] = "pdflatex"  # Use pdflatex for generating PDFs
 mpl.rcParams["pgf.rcfonts"] = False  # Ignore Matplotlib's default font settings
-mpl.rcParams['text.latex.preamble'] = "\n".join([r'\usepackage{amsmath}',  # Optional, for math symbols
+mpl.rcParams['text.latex.preamble'] = "\n".join([r'\usepackage{amsmath}',  
                                                  r'\usepackage{siunitx}'])
 mpl.rcParams.update({"pgf.preamble": "\n".join([ # plots will use this preamble
         r"\usepackage[utf8]{inputenc}",
@@ -143,10 +143,14 @@ for i in range(len(case_tbl)):
         if k_s_i == 0:  # Smooth wall
             case_tbl.at[case_tbl.index[i], 'f_w'] = 0.035 / (Re_i ** 0.16)  # Eq. 5.60
         else:  # Rough wall
-            case_tbl.at[case_tbl.index[i], 'f_w'] = np.exp(5.5 * (case_tbl.at[case_tbl.index[i], 'a_ks']) ** (-0.16) - 6.7)  # Eq. 5.69
+            case_tbl.at[case_tbl.index[i], 'f_w'] = \
+                np.exp(5.5 * (case_tbl.at[case_tbl.index[i], 'a_ks'])**(-0.16)
+                       - 6.7)  # Eq. 5.69
     else:  # Transitional flow
-        f_w_turb = case_tbl.at[case_tbl.index[i], 'f_w'] = 0.035 / (Re_i ** 0.16)  # Eq. 5.60
-        f_w_trans = 0.005 #Conservative choice from Eq. 5.61 (results in a larger U_fm and therefore smaller grid size)
+        f_w_turb = case_tbl.at[case_tbl.index[i], 'f_w'] = \
+            0.035/(Re_i**0.16)  # Eq. 5.60
+        f_w_trans = 0.005 #Conservative choice from Eq. 5.61 (results in a 
+                          #larger U_fm and therefore smaller grid size)
         
         case_tbl.at[case_tbl.index[i], 'f_w'] = max(f_w_turb, f_w_trans)
 
@@ -163,17 +167,17 @@ case_tbl['dy_max'] = nu / case_tbl['U_fm']  # Eq. 9.49
 # Initialize k_s_plus column
 case_tbl['k_s_plus'] = np.full(len(case_tbl), .1)
 
-# Identify rough cases and apply equation
+# Identify rough cases and apply equation (with Eq. from Assignment)
 i_rough = case_tbl['k_s'] != 0
 case_tbl.loc[i_rough, 'k_s_plus'] = case_tbl.loc[i_rough, 'k_s'] \
-                                    * case_tbl.loc[i_rough, 'U_fm'] / nu  # Eq. from Assignment
+                                    * case_tbl.loc[i_rough, 'U_fm'] / nu
 
 if (case_tbl.loc[i_rough, 'k_s_plus'] > 70).any():
     print("Rough case is hydraulically rough")
 
-# Handle smooth cases
+# Handle smooth cases (with Eq. from Assignment)
 i_smooth = case_tbl['k_s'] == 0
-case_tbl.loc[i_smooth, 'k_s'] = 0.1 * nu / case_tbl.loc[i_smooth, 'U_fm']  # Eq. from Assignment
+case_tbl.loc[i_smooth, 'k_s'] = 0.1 * nu / case_tbl.loc[i_smooth, 'U_fm']
 
 del ang, n, i, Re_i, k_s_i, i_smooth, i_rough, data
 
@@ -187,9 +191,9 @@ def ensemble_averaging(var, omegat, T=9.72, N=5, sc=1):
     
     Parameters:
         var (array-like): 
-            m x n array of Data from Jensen et. al. which should be ensemble averaged, 
-            where m is the number of time Data from Jensen et. al. (omega * t),
-            and n is the number of spatial positions (y).
+            m x n array of Data from Jensen et. al. which should be ensemble 
+            averaged, where m is the number of time Data from Jensen et. al. 
+            (omega * t), and n is the number of spatial positions (y).
         omegat (array-like): 
             array of length m with the phase angles omega * t for each time 
             measurement
@@ -204,21 +208,23 @@ def ensemble_averaging(var, omegat, T=9.72, N=5, sc=1):
     Returns:
         var_mean (numpy array): 
             m_ps x n array of the mean of the variable where m_ps is the 
-            number of time Data from Jensen et. al. per cycle and n is the number of 
-            spatial positions
+            number of time Data from Jensen et. al. per cycle and n is the 
+            number of spatial positions
         var_fluc (numpy array): 
             N x m_ps x n array of the fluctuation of the variable around its 
             mean where N is the number of cycles (minus the skipped cycles at 
             the start - cf. parameter sc) m_ps is the number of time 
-            Data from Jensen et. al. per cycle and n is the number of spatial positions.
+            Data from Jensen et. al. per cycle and n is the number of spatial 
+            positions.
         var_fluc_mean (numpy array): 
             m_ps x n array of the mean of the fluctuation of the variable 
             around its mean calculated over all cycles where m_ps is the 
-            number of time Data from Jensen et. al. per cycle and n is the number of 
-            spatial positions.
+            number of time Data from Jensen et. al. per cycle and n is the 
+            number of spatial positions.
         omegat (numpy array): 
             array of length m_ps with the mean of the phase angles omega * t 
-            where m_ps is the  number of time Data from Jensen et. al. per cycle
+            where m_ps is the  number of time Data from Jensen et. al. per 
+            cycle
     """
     #Copy the input arrays so that they don't get altered outside the function
     var = var.copy()
@@ -236,11 +242,12 @@ def ensemble_averaging(var, omegat, T=9.72, N=5, sc=1):
                     .reshape(N, samples_per_cycle, n)[sc-1:,:,:]
     
     #Calculate corresponding omega*t values
-    omegat = omegat[:N*samples_per_cycle].reshape(N, samples_per_cycle)[sc-1:,:]
+    omegat = omegat[:N*samples_per_cycle].reshape(N,samples_per_cycle)[sc-1:,:]
     omegat -= (np.arange((sc-1),N)*2*np.pi).reshape(N-(sc-1),1)
     omegat = np.mean(omegat, axis=0)
     
-    # Calculate the mean velocity for each spatial position by averaging over cycles
+    # Calculate the mean velocity for each spatial position by averaging over 
+    # cycles
     var_mean = np.mean(var_reshaped, axis=0)
     
     # Calculate the fluctuating component of the velocity
@@ -272,7 +279,8 @@ if 'struct_mdl1' in globals():
     i_ph_c1_mdl = [np.argwhere(omegat_c1>=start_ang+np.deg2rad(pa-.5))[0][0] 
                        for pa in phase_angles]
     i_ph_c1_mdl_cont = np.argwhere((omegat_c1>=start_ang-np.deg2rad(1)) 
-                                   & (omegat_c1<=start_ang+np.deg2rad(360))).flatten() 
+                                   & (omegat_c1<=start_ang+np.deg2rad(360))
+                                   ).flatten() 
     
     #Theoretical velocity
     delta_1_c1 = np.sqrt(2*nu/omega)   #Eq. 5.13
@@ -386,7 +394,8 @@ if replot_tasks["C2"]:
     #Plot tau_0/(rho*U_om^2) over omega*t
     fig, ax = plt.subplots()
     ax.plot(np.rad2deg(omegat_c2[i_ph_c2_mdl]-start_ang),
-            (struct_mdl2.tau0[i_ph_c2_mdl]/(struct_mdl2.rho*struct_mdl2.U0m**2)), 
+            (struct_mdl2.tau0[i_ph_c2_mdl]
+             /(struct_mdl2.rho*struct_mdl2.U0m**2)), 
             label="MatRANS Model",
             zorder=2)
     ax.plot(np.rad2deg(omegat_c2[i_ph_c2_mdl]-start_ang),
@@ -436,9 +445,6 @@ if replot_tasks["C2"]:
     ax.set_ylabel(r'$f_w^*$')
     ax.set_xlabel(r'$\omega t\:\unit{[\degree]}$')
     ax.set_ylim([0, (np.ceil(max(f_w_ast_meas_c2)*1000))/1000])
-    # ax.set_ylim([min ((np.floor(min(f_w_ast_meas_c2)*1000))/1000,
-    #                   (np.floor(min(f_w_ast_mdl_c2 [i_ph_c2_mdl])*1000))/1000),
-    #              (np.ceil(max(f_w_ast_meas_c2)*1000))/1000])
     ax.set_xlim([-5, 140])
     ax.set_xticks(np.arange(0,140,10))
     ax.grid(zorder=1)
@@ -473,7 +479,7 @@ if 'struct_mdl3' in globals():
     i_ph_c3_meas_cont = np.argwhere(struct_meas3.omegat_tau0<=360).flatten()
     
     #Calculate turbulent kinetic energy
-    k_meas_c3 = .65 * (struct_meas3.uu + struct_meas3.vv)  #Eq. 10.21 (cf. Assignment)
+    k_meas_c3 = .65 *(struct_meas3.uu + struct_meas3.vv)   #Eq. 10.21
     
     #Calculate Reynolds stresses
     du_dy_c3 = np.gradient(struct_mdl3.u[i_ph_c3_mdl,:], struct_mdl3.y, axis=1)
@@ -710,7 +716,7 @@ if 'struct_mdl4' in globals():
     i_ph_c4_meas_cont = np.argwhere(struct_meas4.omegat_tau0<=360).flatten()
     
     #Calculate turbulent kinetic energy
-    k_meas_c4 = .65 * (struct_meas4.uu + struct_meas4.vv)  #Eq. 10.21 (cf. Assignment)
+    k_meas_c4 =.65 * (struct_meas4.uu + struct_meas4.vv)  #Eq. 10.21
     
     #Calculate Reynolds stresses
     du_dy_c4 = np.gradient(struct_mdl4.u[i_ph_c4_mdl,:], struct_mdl4.y, axis=1)
