@@ -19,16 +19,16 @@ import custom_markers
 
 exp_fld = "./00_export/"
 if not os.path.isdir(exp_fld): os.mkdir(exp_fld)
-replot_tasks = dict(C1=True, 
-                    C2=True,
+replot_tasks = dict(C1=False, 
+                    C2=False,
                     C3=True,
-                    C4=True,
-                    T7=True)
+                    C4=False,
+                    T7=False)
 
 #%% Global plot settings
 
 #Figure size:
-mpl.rcParams['figure.figsize'] = (16, 8)  
+mpl.rcParams['figure.figsize'] = (25, 8)  
 
 #Lines and markers
 mpl.rcParams['lines.linewidth'] = 1.2
@@ -267,7 +267,8 @@ omega = 2*np.pi/T           #[rad/s] - Angular frequency
 rho = 1000                  #[kg/m^3] - Fluid density
 mu = rho*nu                 #[kg/(m*s)] - Dynamic viscosity
 
-phase_angles = np.array([0, 45, 90, 135])   #[°] - Phase angles to plot
+# phase_angles = np.array([0, 45, 90, 135])   #[°] - Phase angles to plot
+phase_angles = np.array([0, 22.5, 45, 67.5, 90, 112.5, 135])   #[°] - Phase angles to plot
 markers = ["+", "1", "d_cm", "v_cm"]        #Markers for the four phase angles
 
 #%% Case 1: Laminar wave boundary layer 
@@ -298,7 +299,7 @@ if replot_tasks["C1"]:
         print("Data missing for Case 1 - Plots not replotted")
     
     #Plot u/U_om over y/a
-    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True, sharex=True)
     ya_max = 4.5e-2
     for i,phase_i in enumerate(phase_angles):
         i_p = i_ph_c1_mdl[i]
@@ -495,7 +496,7 @@ if replot_tasks["C3"]:
         print("Data missing for Case 3 - Plots not replotted")
 
     #Plot u/U_om over y/a
-    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True, sharex=True)
     ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
                                 /case_tbl.loc[case, "a"])/1e-2))
     for i,phase_i in enumerate(phase_angles):
@@ -536,7 +537,7 @@ if replot_tasks["C3"]:
     plt.close(fig)
     
     #Plot u/U_om over y/a (semilog)
-    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True, sharex=True)
     ya_max = 1e-2*(np.ceil(np.max(struct_meas3.y_uuvv
                                 /case_tbl.loc[case, "a"])/1e-2))
     for i,phase_i in enumerate(phase_angles):
@@ -577,7 +578,7 @@ if replot_tasks["C3"]:
     plt.close(fig)
     
     #Plot k/U_om^2 over y/a (separate plots)
-    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True, sharex=True)
     xmax = 1e-3*(np.ceil(np.max(struct_mdl3.k[i_ph_c3_mdl,:]
                                 /struct_mdl3.U0m**2)/1e-3)+1)
     
@@ -623,7 +624,7 @@ if replot_tasks["C3"]:
     plt.close(fig)
     
     #Plot Reynolds stresses over y/a (separate plots)
-    fig, ax = plt.subplots(1,4,sharey=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True)
     xmin = 5e-4*(np.floor(min(np.min(rs_mdl_c3), np.min(rs_meas_c3))/5e-4))
     xmax = 5e-4*(np.ceil(np.max(rs_mdl_c3)/5e-4))
     for i,phase_i in enumerate(phase_angles):
@@ -732,7 +733,7 @@ if replot_tasks["C4"]:
         print("Data missing for Case 4 - Plots not replotted")
 
     #Plot u/U_om over y/a
-    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True, sharex=True)
     ya_max = 1e-2*(np.ceil(np.max(struct_meas4.y_uuvv
                                 /case_tbl.loc[case, "a"])/1e-2))
     for i,phase_i in enumerate(phase_angles):
@@ -773,7 +774,7 @@ if replot_tasks["C4"]:
     plt.close(fig)
 
     #Plot u/U_om over y/a (semilog)
-    fig, ax = plt.subplots(1,4,sharey=True, sharex=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True, sharex=True)
     ya_max = 1e-2*(np.ceil(np.max(struct_meas4.y_uuvv
                                 /case_tbl.loc[case, "a"])/1e-2))
     for i,phase_i in enumerate(phase_angles):
@@ -815,7 +816,7 @@ if replot_tasks["C4"]:
 
 
     #Plot k/U_om^2 over y/a (separate plots)
-    fig, ax = plt.subplots(1,4,sharey=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True)
     xmax = 1e-3*(np.ceil(np.max(struct_mdl4.k[i_ph_c4_mdl,:]
                                 /struct_mdl4.U0m**2)/1e-3)+1)
     for i,phase_i in enumerate(phase_angles):
@@ -860,7 +861,7 @@ if replot_tasks["C4"]:
     plt.close(fig)
     
     #Plot Reynolds stresses over y/a (separate plots)
-    fig, ax = plt.subplots(1,4,sharey=True)
+    fig, ax = plt.subplots(1,len(phase_angles),sharey=True)
     xmin = 1e-3*(np.floor(min(np.min(rs_mdl_c4), np.min(rs_meas_c4))/1e-3))
     xmax = 1e-3*(np.ceil(min(np.max(rs_mdl_c4), np.max(rs_meas_c4))/1e-3)+1)
     for i,phase_i in enumerate(phase_angles):
